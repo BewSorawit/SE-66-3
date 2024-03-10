@@ -6,9 +6,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use(morgan('dev')); // Logging middleware
-app.use(bodyParser.json()); // Parse JSON requests
-app.use(cors()); // Enable Cross-Origin Resource Sharing
-app.use(express.json()); // Parse JSON requests using Express middleware
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(cors());
+app.use(express.json());
 
 module.exports = app;
