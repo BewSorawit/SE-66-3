@@ -1,6 +1,6 @@
 // index.js
 const app = require('./config/express');
-const db = require('./config/db');
+const db = require('./database/db');
 const { readdirSync } = require('fs');
 
 const port = process.env.PORT || 3001;
