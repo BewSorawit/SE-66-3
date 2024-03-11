@@ -1,27 +1,12 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const mysql = require('mysql');
+// index.js
+const app = require('./config/express');
+const db = require('./database/db');
+const { readdirSync } = require('fs');
 
-const app = express();
+const port = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+readdirSync('./routes').map((r) => app.use('/api', require(`./routes/${r}`)));
 
-// Environment variables
-const port = process.env.PORT || 3000;
-const dbConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'test_employeesystem',
-};
-
-// Database connection
-const db = mysql.createConnection(dbConfig);
-
-// Start the server
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
