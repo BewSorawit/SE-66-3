@@ -9,7 +9,7 @@ function AfterSend() {
     
     function handleSubmit(event) {
         event.preventDefault();
-        axios.get('http://localhost:8081/AfterSend/')
+        axios.get('http://localhost:3000/AfterSend/')
         .then(res => {
             console.log(res);
 

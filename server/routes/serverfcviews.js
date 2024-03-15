@@ -1,20 +1,7 @@
-const express = require("express");
-const cors = require("cors");
-const mysql = require("mysql");
+const express = require('express');
+const router = express.Router();
 
-const app = express();
-app.use(express.json());
-
-app.use(cors());
-
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "se_1"
-})
-
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
 
     const sql = `
     SELECT branch.branchID as ID, branch.branchName as branchName, DATE_FORMAT(schedule.date,'%e %M %Y') AS date, 
@@ -44,7 +31,7 @@ app.get("/", (req, res) => {
   
 })
 
-app.get("/send/:branchID", (req, res) => {
+router.get("/send/:branchID", (req, res) => {
     const branchID = req.params.branchID;
     const sql = `
     SELECT
@@ -100,7 +87,7 @@ app.get("/send/:branchID", (req, res) => {
     })
 })*/
 
-app.get("/AfterSend", (req, res) => {
+router.get("/AfterSend", (req, res) => {
     const sql = "SELECT * FROM user";
     db.query(sql, (err,data) => {
         if(err) return res.json("Error");
@@ -136,8 +123,4 @@ app.put('/update/:id', (req, res) => {
 })*/
 
 
-app.listen(8081 , () => { 
-    console.log("listening");
-})
-
-
+module.exports = router;
