@@ -12,7 +12,7 @@ const Absence = sequelize.define('absence', {
         allowNull: false
     },
     status: {
-        type: DataTypes.ENUM('in', 'out', 'success'),
+        type: DataTypes.ENUM('in branch', 'out branch', 'FC Broadcasting'),
         allowNull: false
     },
     userIDsend: {

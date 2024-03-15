@@ -10,7 +10,7 @@ import AfterSend from './AfterSend';
 function App() {
   return (
     <div className="App">
-      <Index />
+      {/* <Index /> */}
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<FCviews />}></Route>

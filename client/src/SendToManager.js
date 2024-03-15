@@ -11,8 +11,7 @@ function SendToManager() {
 
     // ใช้ useEffect เพื่อเรียก API เมื่อมีการเปลี่ยนแปลงในค่า branchID 
     useEffect(() => {
-
-            axios.get(`http://localhost:8081/send/` + branchID)
+            axios.get(`${process.env.LOCALHOST}/send/` + branchID)
                 .then(res => {
                     console.log(res.data);
                     setSend(res.data);
