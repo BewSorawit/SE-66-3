@@ -8,7 +8,7 @@ const ShiftDetail = sequelize.define('shiftdetail', {
         primaryKey: true
     },
     shiftID: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     userID: {
