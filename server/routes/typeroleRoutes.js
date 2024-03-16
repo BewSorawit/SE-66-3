@@ -1,4 +1,4 @@
-// project/server/routes/typeroleRoutes.js
+// project/server/routes/typeRoleRoutes.js
 const express = require('express');
 const router = express.Router();
 const { getAllRoles, createRole } = require('../controllers/typeroleController');

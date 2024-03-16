@@ -11,6 +11,7 @@ const getAllBranches = async (req, res) => {
   }
 };
 
+
 // สร้าง Branch ใหม่
 const createBranch = async (req, res) => {
   const { branchID, branchName, branchAddress } = req.body;

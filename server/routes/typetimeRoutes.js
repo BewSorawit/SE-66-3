@@ -1,4 +1,4 @@
-// project/server/routes/typetimeRoutes.js
+// project/server/routes/typeTimeRoutes.js
 const express = require('express');
 const router = express.Router();
 const { getAllTypeTimes, createTypeTime } = require('../controllers/typetimeController');
