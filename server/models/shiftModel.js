@@ -4,19 +4,20 @@ const { sequelize } = require('../database/db');
 
 const Shift = sequelize.define('shift', {
     shiftID: {
-        type: DataTypes.STRING(10),
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true // ทำให้ shiftID เป็น auto-increment
     },
     scheduleID: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     timeID: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     branchID: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(10), // ตัวแปร branchID ยังคงเป็น STRING
         allowNull: false
     }
 }, {

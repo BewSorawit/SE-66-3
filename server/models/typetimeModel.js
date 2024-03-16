@@ -4,8 +4,9 @@ const { sequelize } = require('../database/db');
 
 const TypeTime = sequelize.define('typetime', {
     timeID: {
-        type: DataTypes.STRING(10),
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true // ทำให้ timeID เป็น auto-increment
     },
     timeStart: {
         type: DataTypes.TIME,
