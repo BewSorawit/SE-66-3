@@ -4,9 +4,8 @@ const { sequelize } = require('../database/db');
 
 const Schedule = sequelize.define('schedule', {
     scheduleID: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true // ทำให้ scheduleID เป็น auto-increment
+        type: DataTypes.STRING(10),
+        primaryKey: true
     },
     date: {
         type: DataTypes.DATEONLY,

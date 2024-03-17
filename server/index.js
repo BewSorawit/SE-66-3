@@ -9,7 +9,7 @@ const port = process.env.PORT || 3001;
 const startServer = async () => {
   try {
     // รอให้ฐานข้อมูล Sequelize สร้างตารางและเชื่อมต่อ
-    await sequelize.sync();
+    await sequelize.sync({force: true});
     console.log('Sequelize database synchronized.');
 
     // เชื่อมต่อกับ MySQL
