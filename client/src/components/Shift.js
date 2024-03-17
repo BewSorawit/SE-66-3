@@ -13,19 +13,16 @@ const Shift = () => {
             try {
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
 
-                const eventsData = shiftDetailResponse.data.map(shiftDetail => {
+                const eventsData = shiftDetailResponse.data.map((shiftDetail, index) => {
                     const startDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeStart}`);
                     const endDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeEnd}`);
 
-                    // Construct event title with time range
-                    const timeRange = `${formatTime(startDateTime)}-${formatTime(endDateTime)}`;
-                    const eventTitle = `${shiftDetail.user.firstName} (${timeRange})`;
-
                     return {
-                        title: eventTitle,
+                        title: `${shiftDetail.user.firstName} (${formatTime(startDateTime)} - ${formatTime(endDateTime)})`,
                         start: startDateTime,
                         end: endDateTime,
-                        borderColor: 'white'
+                        borderColor: 'white',
+                        backgroundColor: `rgb(${getRandomColor(index)})`
                     };
                 });
 
@@ -43,6 +40,20 @@ const Shift = () => {
         const hours = dateTime.getHours().toString().padStart(2, '0');
         const minutes = dateTime.getMinutes().toString().padStart(2, '0');
         return `${hours}:${minutes}`;
+    };
+
+    // Function to generate random color
+    const getRandomColor = (index) => {
+        const colors = [
+            [255, 99, 132],    // Red
+            [54, 162, 235],    // Blue
+            [255, 206, 86],    // Yellow
+            [75, 192, 192],    // Green
+            [153, 102, 255],   // Purple
+            [255, 159, 64],    // Orange
+        ];
+        const colorIndex = index % colors.length;
+        return colors[colorIndex].join(',');
     };
 
     return (
