@@ -12,36 +12,38 @@ const Shift = () => {
         const fetchData = async () => {
             try {
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
-    
-                // Create events based on the shiftDetail data
+
                 const eventsData = shiftDetailResponse.data.map(shiftDetail => {
-                    // Check if timeStart and timeEnd are not null or undefined
-                    if (shiftDetail.shift.typetime && shiftDetail.shift.typetime.timeStart && shiftDetail.shift.typetime.timeEnd) {
-                        // Format date and time to ISO 8601 format
-                        const startDate = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeStart}`).toISOString();
-                        const endDate = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeEnd}`).toISOString();
-                        
-                        return {
-                            title: shiftDetail.user.firstName, // Display the firstName of the user
-                            start: startDate, // Use the formatted start time
-                            end: endDate, // Use the formatted end time
-                            borderColor: 'white'
-                        };
-                    } else {
-                        return null; // Return null for invalid data
-                    }
-                }).filter(event => event !== null); // Filter out null values
-    
+                    const startDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeStart}`);
+                    const endDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeEnd}`);
+
+                    // Construct event title with time range
+                    const timeRange = `${formatTime(startDateTime)}-${formatTime(endDateTime)}`;
+                    const eventTitle = `${shiftDetail.user.firstName} (${timeRange})`;
+
+                    return {
+                        title: eventTitle,
+                        start: startDateTime,
+                        end: endDateTime,
+                        borderColor: 'white'
+                    };
+                });
+
                 setEvents(eventsData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-    
+
         fetchData();
     }, []);
-    
 
+    // Function to format time (HH:MM)
+    const formatTime = (dateTime) => {
+        const hours = dateTime.getHours().toString().padStart(2, '0');
+        const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    };
 
     return (
         <div>
