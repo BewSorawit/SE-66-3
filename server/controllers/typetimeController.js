@@ -17,10 +17,11 @@ const getAllTypeTimes = async (req, res) => {
 // Controller สำหรับเพิ่มข้อมูล type time ใหม่
 const createTypeTime = async (req, res) => {
   try {
-    const { timeStart, timeEnd } = req.body; // รับข้อมูลเวลาเริ่มต้นและสิ้นสุดจาก req.body
+    const { timeID, timeStart, timeEnd } = req.body; // รับข้อมูลเวลาเริ่มต้นและสิ้นสุดจาก req.body
 
     // สร้าง type time ใหม่ในฐานข้อมูล
     const newTypeTime = await TypeTime.create({
+      timeID,
       timeStart: timeStart,
       timeEnd: timeEnd
     });

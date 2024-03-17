@@ -14,9 +14,9 @@ const getAllShifts = async (req, res) => {
 
 // Create a new shift
 const createShift = async (req, res) => {
-    const { name, start, end, scheduleID, timeID, branchID } = req.body;
+    const { shiftID, scheduleID, timeID, branchID } = req.body;
     try {
-        const shift = await Shift.create({ name, start, end, scheduleID, timeID, branchID });
+        const shift = await Shift.create({ shiftID, scheduleID, timeID, branchID });
         res.status(201).json(shift);
     } catch (error) {
         console.error('Error creating shift:', error);

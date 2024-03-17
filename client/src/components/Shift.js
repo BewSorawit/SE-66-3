@@ -13,7 +13,10 @@ const Shift = () => {
             try {
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
 
-                const eventsData = shiftDetailResponse.data.map((shiftDetail, index) => {
+                // Filter out the events where absenceId is null
+                const filteredData = shiftDetailResponse.data.filter(shiftDetail => shiftDetail.absenceID === null);
+
+                const eventsData = filteredData.map((shiftDetail, index) => {
                     const startDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeStart}`);
                     const endDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeEnd}`);
 
@@ -34,6 +37,7 @@ const Shift = () => {
 
         fetchData();
     }, []);
+
 
     // Function to format time (HH:MM)
     const formatTime = (dateTime) => {
