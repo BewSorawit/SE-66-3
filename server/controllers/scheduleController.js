@@ -17,11 +17,12 @@ const getAllSchedules = async (req, res) => {
 // Controller สำหรับเพิ่มข้อมูล schedule ใหม่
 const createSchedule = async (req, res) => {
     try {
-        const { date } = req.body; // รับข้อมูลวันที่จาก req.body
+        const { scheduleID, date } = req.body; // รับข้อมูลวันที่จาก req.body
 
         // สร้าง schedule ใหม่ในฐานข้อมูล
         const newSchedule = await Schedule.create({
-            date: date
+            scheduleID,
+            date
         });
 
         // ส่งคำตอบกลับไปยัง client
