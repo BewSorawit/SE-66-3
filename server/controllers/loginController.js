@@ -16,6 +16,7 @@ const login = async (req, res) => {
             }
         });
         if (user) {
+            console.log(req.body);
             // ส่งข้อมูลผู้ใช้กลับไปยังไคลเอนต์
             return res.json(user);
         } else {
