@@ -18,9 +18,11 @@ const Shift = () => {
                 console.log(user);
                 // ดึงข้อมูลตารางเวลาเข้างานที่ต้องการแสดง
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
-
-                // Filter out the events where absenceId is null
-                const filteredData = shiftDetailResponse.data.filter(shiftDetail => shiftDetail.absenceID === null);
+                
+                // Filter out the events where absenceId is null and branchID matches the user's branchID
+                const filteredData = shiftDetailResponse.data.filter(shiftDetail =>
+                    shiftDetail.absenceID === null && shiftDetail.shift.branchID === user.branchID
+                );
 
                 const eventsData = filteredData.map((shiftDetail, index) => {
                     const startDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeStart}`);
