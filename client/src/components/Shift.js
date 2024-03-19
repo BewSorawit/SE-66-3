@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -6,11 +7,16 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import axios from 'axios';
 
 const Shift = () => {
+    const location = useLocation();
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // ดึงข้อมูลผู้ใช้ที่ส่งมาจาก location object
+                const user = location.state.user;
+                console.log(user);
+                // ดึงข้อมูลตารางเวลาเข้างานที่ต้องการแสดง
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
 
                 // Filter out the events where absenceId is null
@@ -34,10 +40,8 @@ const Shift = () => {
                 console.error('Error fetching data:', error);
             }
         };
-
         fetchData();
-    }, []);
-
+    }, [location]);
 
     // Function to format time (HH:MM)
     const formatTime = (dateTime) => {
