@@ -7,14 +7,11 @@ function Login() {
         email: '',
         passwordUser: ''
     });
-    // const [use, setUser] = useState([])
-
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
 
     const handleInput = (event) => (
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }))
-
     );
 
     const handleSubmit = (event) => {
@@ -26,11 +23,11 @@ function Login() {
                     console.log(res.data);
                     if (res.data.roleID === "1") {
                         alert("Login success");
-                        navigate('/home');
+                        navigate('/home', { state: { user: res.data } }); // ส่งข้อมูลผู้ใช้ไปยังหน้า Shift.js
                     } else if (res.data.roleID === "2") {
-                        navigate('/home2');
+                        navigate('/shift', { state: { user: res.data } });
                     } else if (res.data.roleID === "3") {
-                        navigate('/home3');
+                        navigate('/home3', { state: { user: res.data } });
                     } else {
                         alert("No record existed");
                     }

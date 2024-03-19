@@ -49,6 +49,23 @@ const getShowShift = async (req, res) => {
 const createShiftDetail = async (req, res) => {
     const { shiftDetailID, shiftID, userID, status, statusCL, absenceID } = req.body;
     try {
+        // ดึงข้อมูล shift จาก shiftID
+        const shift = await Shift.findByPk(shiftID);
+
+        // ดึงข้อมูลผู้ใช้ (User) จาก userID
+        const user = await User.findByPk(userID);
+
+        // ตรวจสอบว่า shift และ user มีค่าหรือไม่
+        if (!shift || !user) {
+            return res.status(400).json({ error: 'Shift or user not found' });
+        }
+
+        // ตรวจสอบว่า branchID ของ shift เท่ากับ branchID ของ user หรือไม่
+        if (shift.branchID !== user.branchID) {
+            return res.status(400).json({ error: 'Unauthorized access to shift' });
+        }
+
+        // สร้าง shift detail
         const shiftDetail = await ShiftDetail.create({ shiftDetailID, shiftID, userID, status, statusCL, absenceID });
         res.status(201).json(shiftDetail);
     } catch (error) {
@@ -56,5 +73,6 @@ const createShiftDetail = async (req, res) => {
         res.status(400).json({ error: 'Unable to create shift detail' });
     }
 };
+
 
 module.exports = { getAllShiftDetails, createShiftDetail, getShowShift };
