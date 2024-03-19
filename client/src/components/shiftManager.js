@@ -1,13 +1,13 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import axios from 'axios';
 
 const ShiftManager = () => {
-  const [timeId, setTimeId] = useState();
-  const [startTime, setStartTime] = useState();
-  const [endTime, setEndTime] = useState();
+  const [timeId, setTimeId] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
 
   const handleInputTimeIdChange = (event) => {
     setTimeId(event.target.value);
@@ -24,31 +24,35 @@ const ShiftManager = () => {
   };
 
   const addData = async () => {
-    if (startTime && endTime && timeId) {
-      const existingTypeTime = await axios.get(`${process.env.REACT_APP_API_URL}/typetimes/${timeId}`);
-      if (existingTypeTime) {
-        window.alert('Time ID already exists.');
-        return;
-      }
-
-      await axios.post(`${process.env.REACT_APP_API_URL}/typetimes/create`, {
-        timeID: timeId,
-        timeStart: startTime,
-        timeEnd: endTime
-      })
-      .then(response => {
-        console.log('Response:', response.data);
-        window.alert('Data saved successfully.');
-        // ทำอย่างอื่นๆ หลังจากบันทึกข้อมูลเรียบร้อยแล้ว
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        window.alert('Failed to save data.');
-      });
-    } else {
-      window.alert('Start time, end time, or time ID is null.');
+    if (!startTime || !endTime || !timeId) {
+      window.alert('Please fill in all fields.');
+      return;
     }
-  }
+
+    try {
+      // ตรวจสอบว่า ID ซ้ำหรือไม่
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/typetimes/check/${timeId}`);
+      if (response.status === 200) {
+        // สร้างข้อมูลใหม่เมื่อไม่พบข้อมูลซ้ำ
+        try {
+          await axios.post(`${process.env.REACT_APP_API_URL}/typetimes/create`, {
+            timeID: timeId,
+            timeStart: startTime,
+            timeEnd: endTime
+          });
+          window.alert('Data saved successfully.');
+        } catch (error) {
+          console.error('Error creating type time:', error);
+          window.alert('Failed to save data.');
+        }
+      }
+    } catch (error) {
+      // หากมีข้อผิดพลาดในการตรวจสอบว่า ID ซ้ำหรือไม่
+      console.error('Error checking duplicate type time:', error);
+      window.alert('Failed to check duplicate data.');
+    }
+};
+
 
   return (
     <section className="rounded border mx-auto border-3" style={{ width: '1300px', margin: '50px', padding: '25px' }}>
@@ -81,7 +85,7 @@ const ShiftManager = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default ShiftManager;

@@ -53,8 +53,25 @@ const createTypeTime = async (req, res) => {
   }
 };
 
+const checkDuplicateTypeTime = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const existingTypeTime = await TypeTime.findOne({ where: { timeID: id } });
+    if (existingTypeTime) {
+      res.status(400).json({ error: 'Time ID already exists.' });
+    } else {
+      res.status(200).json({ message: 'Time ID is available.' });
+    }
+  } catch (error) {
+    console.error('Error checking duplicate type time:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getAllTypeTimes,
   createTypeTime,
-  getTypeTimeById
+  getTypeTimeById,
+  checkDuplicateTypeTime
 };
