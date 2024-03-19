@@ -5,6 +5,7 @@ const { Branch } = require('../models');
 const getAllBranches = async (req, res) => {
   try {
     const branches = await Branch.findAll();
+
     res.json(branches);
   } catch (error) {
     res.status(500).json({ error: 'Unable to fetch branches' });
