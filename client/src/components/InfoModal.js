@@ -33,7 +33,7 @@ function InfoModal({ data, userList, selectedOption, handleSelectChange, show, h
 
           // ทำงานเมื่อเลือกสถานะ "หาพนักงานไม่ได้"
           // ส่งข้อมูลไปยัง backend หรือทำอย่างอื่นตามต้องการ
-      /*********************************************************************************************************** */
+
         }else if (status === 'no' && selectedOption === '') {
           console.log('Selected status:', status);
           console.log('Selected user:', selectedOption);
