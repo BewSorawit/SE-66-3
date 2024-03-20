@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import TimePicker from 'react-time-picker';
 import 'react-time-picker/dist/TimePicker.css';
 import axios from 'axios';
+import moment from "moment";
 
 const ShiftManager = () => {
   const [timeId, setTimeId] = useState('');
@@ -17,8 +18,11 @@ const ShiftManager = () => {
     const startDate = new Date(`2000-01-01T${startTime}`);
     const endDate = new Date(`2000-01-01T${endTime}`);
 
-    const timeDifferenceMs = endDate - startDate;
-    const hoursDifference = Math.floor(timeDifferenceMs / (1000 * 60 * 60));
+    // const timeDifferenceMs = endDate - startDate;
+    // const hoursDifference = timeDifferenceMs / (1000 * 60 * 60);
+    var ms = moment(startDate, "DD/MM/YYYY HH:mm:ss").diff(moment(endDate, "DD/MM/YYYY HH:mm:ss"));
+    var d = moment.duration(ms);
+    var hoursDifference = d.format("hh:mm:ss");
 
     return hoursDifference;
   };
@@ -51,7 +55,7 @@ const ShiftManager = () => {
       console.error('Error checking duplicate type time:', error);
       window.alert('Failed to check duplicate data.');
     }
-};
+  };
 
 
   return (
@@ -74,7 +78,7 @@ const ShiftManager = () => {
             </div>
             <div className="d-inline mx-8">
               <label className="form-label">ชั่วโมงการทำงาน</label>
-              <input type="text" className="form-control border-2" id="hourDiff" value={isNaN(calculateHoursDifference()) ? '' : calculateHoursDifference()} readOnly />
+              <input type="text" className="form-control border-2" id="hourDiff" value={isNaN(calculateHoursDifference()) ? '' : calculateHoursDifference() + " ชั่วโมง"} readOnly />
             </div>
           </div>
           <div className="mt-3">
