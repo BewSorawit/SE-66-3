@@ -24,15 +24,20 @@ function Login() {
             axios.post(`${process.env.REACT_APP_API_URL}/login`, values)
                 .then(res => {
                     console.log(res.data);
-                    if (res.data.roleID === "1") {
-                        alert("Login success");
-                        navigate('/home');
-                    } else if (res.data.roleID === "2") {
+                    if (res.data.roleID === "R02") {
+                        // alert("Login success");
+                        navigate('/home1');
+                    } else if (res.data.roleID === "R01") {  // Admin 
+                        // alert("Login success");
                         navigate('/home2');
-                    } else if (res.data.roleID === "3") {
+                    } else if (res.data.roleID === "R03") {
+                        // alert("Login success");
                         navigate('/home3');
-                    } else {
-                        alert("No record existed");
+                    } else if(res.data.roleID === "R04"){
+                        // alert("Login success");
+                        navigate('/home4');
+                    }else{
+                         alert("No record existed");
                     }
                 })
                 .catch(err => console.log(err));
