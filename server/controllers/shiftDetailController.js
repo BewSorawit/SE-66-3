@@ -20,7 +20,7 @@ const getShowShift = async (req, res) => {
             include: [
                 {
                     model: User,
-                    attributes: ['firstName'] // Include the firstName from the User table
+                    attributes: ['firstName','branchID'] // Include the firstName from the User table
                 },
                 {
                     model: Shift,
