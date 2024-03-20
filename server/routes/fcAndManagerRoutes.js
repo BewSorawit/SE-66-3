@@ -69,6 +69,7 @@ FROM
 WHERE 
     absences.status = 'FC';
 `;
+// change status
 
     db.query(sql, (err, data) => {
         if (err) return res.json("Error");

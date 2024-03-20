@@ -3,7 +3,7 @@ const app = require('./config/express');
 const { mysqlConnection, sequelize } = require('./database/db');
 const { readdirSync } = require('fs');
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3001;
 
 // สร้างฟังก์ชันสำหรับเริ่มต้นเซิร์ฟเวอร์
 const startServer = async () => {
