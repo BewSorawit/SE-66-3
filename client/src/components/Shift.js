@@ -26,7 +26,13 @@ const Shift = () => {
 
                 const eventsData = filteredData.map((shiftDetail, index) => {
                     const startDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeStart}`);
-                    const endDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeEnd}`);
+                    let endDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeEnd}`);
+
+                    // Check if end time is before start time, indicating it's on the next day
+                    if (endDateTime < startDateTime) {
+                        // Increment end time's day by 1
+                        endDateTime.setDate(endDateTime.getDate() + 1);
+                    }
 
                     return {
                         title: `${shiftDetail.user.firstName} (${formatTime(startDateTime)} - ${formatTime(endDateTime)})`,
