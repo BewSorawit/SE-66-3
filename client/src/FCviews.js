@@ -16,9 +16,7 @@ function FCviews() {
     return (
         <div className=' d-flex  modalBackground bg-success justify-content-center align-items-center'>
 
-            <div className='d-flex  w-80 bg-white'>
-
-            </div>
+       
             <div className='w-80 bg-white rounded p-3'>
 
                 <table className='table fonttext2'>
