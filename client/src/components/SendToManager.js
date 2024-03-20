@@ -57,9 +57,7 @@ function SendToManager() {
                                 <div className='fonttext2'>
                                     <button className='btn btn-success' onClick={() => setStatus('FC') } >ส่งต่อ</button>
                                 </div>
-                                {/* <td>
-                                    <Link to={`/FcView`} className='btn btn-success' onClick={() => setStatus('FC')}>ส่งต่อ</Link>
-                                </td> */}
+                              
                             </form>
 
                         </div>
