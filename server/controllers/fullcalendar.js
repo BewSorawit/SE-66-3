@@ -1,4 +1,4 @@
-// server/controllers/fullcalendar.js
+// project/server/controllers/fullcalendar.js
 const createEvent = async (req, res) => {
   try {
     console.log(req.body);
