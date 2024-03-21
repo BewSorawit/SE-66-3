@@ -39,9 +39,9 @@ function Signup() {
 
     const navigate = useNavigate();
 
-    const handleChange = (event) => {
-        setValues({...values,[event.target.name]:event.target.value})
-    }
+    // const handleChange = (event) => {
+    //     setValues({...values,[event.target.name]:event.target.value})
+    // }
 
     const handleInput = (event) =>{
         setValues(prev => ({...prev,[event.target.name]:event.target.value }))
@@ -55,7 +55,7 @@ function Signup() {
             axios.post(`${process.env.REACT_APP_API_URL}/users/create`,values)
             .then(res => {
                 alert("Add success!!")
-                navigate('/home2');
+                navigate('/homeadmin');
             })
             .catch(err => console.log(err));
         }
@@ -203,7 +203,7 @@ function Signup() {
                     <p></p>                                        
                                                                                                            
                     {/* <button className='button button-default border'>Create Account</button>       the bootstrap cannot read char some character   */}
-                    <Link to='/home2' className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none  '>Back</Link>     
+                    <Link to='/homeadmin' className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none  '>Back</Link>     
                                              {/* first this is an button style  */}
                 </form>
             

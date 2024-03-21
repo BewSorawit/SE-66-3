@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 
-function Home2(){
+function HomeAdmin(){
     const[user,setUser]=useState([])
 
     useEffect(()=>{
@@ -20,7 +20,8 @@ function Home2(){
         fetchData();
     },[])
     
-    const handleDelete = (id) => {
+    // delete function         not finish  
+    const handleDelete = (id) => {        
         axios.delete(`http://localhost:8080/delete/${id}`)
             .then(res => {
                 console.log(res);
@@ -76,4 +77,4 @@ function Home2(){
     )
 }
 
-export default Home2
+export default HomeAdmin
