@@ -24,18 +24,19 @@ function Login() {
             axios.post(`${process.env.REACT_APP_API_URL}/login`, values)
                 .then(res => {
                     console.log(res.data);
-                    if (res.data.roleID === "R02") {
-                        // alert("Login success");
-                        navigate('/home1');
-                    } else if (res.data.roleID === "R01") {  // Admin 
-                        // alert("Login success");
-                        navigate('/home2');
-                    } else if (res.data.roleID === "R03") {
-                        // alert("Login success");
-                        navigate('/home3');
-                    } else if(res.data.roleID === "R04"){
-                        // alert("Login success");
-                        navigate('/home4');
+                    // The role ID must be the same in the mysql 'roleID'  'roleName'
+                    if (res.data.roleID === "R01") {   // Admin 
+                        alert("Login success");
+                        navigate('/homeadmin' , { state: { user: res.data }} );
+                    } else if (res.data.roleID === "R02") {  //  Employee
+                        alert("Login success");
+                        navigate('/homeemployee' , { state: { user: res.data }} );
+                    } else if (res.data.roleID === "R03") { // Manager
+                        alert("Login success");
+                        navigate('/homemanager' , { state: { user: res.data }} );
+                    } else if(res.data.roleID === "R04"){ //  Fc 
+                        alert("Login success");
+                        navigate('/homefc' , { state: { user: res.data }} );
                     }else{
                          alert("No record existed");
                     }

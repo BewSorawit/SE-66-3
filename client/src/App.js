@@ -7,10 +7,11 @@ import ScheduleForm from './components/ScheduleForm'; // Import ScheduleForm com
 
 import Login from './components/Login'; // Import Login component
 import Signup from './components/Signup';
-import Home1 from './components/Home1';
-import Home2 from './components/Home2';
-import Home3 from './components/Home3';
-import Home4 from './components/Home4';
+
+import HomeAdmin from './components/HomeAdmin';
+import HomeFc from './components/HomeFc';
+import HomeManager from './components/HomeManager';
+import HomeEmployee from './components/HomeEmployee';
 
 const App = () => {
   return (
@@ -21,11 +22,13 @@ const App = () => {
         <Route path="/schedule" element={<ScheduleForm />} /> 
         
         <Route path="/" element={<Login />} />
-        <Route path="/home1" element={<Home1 />} />
-        <Route path="/home2" element={<Home2 />} />
-        <Route path="/home3" element={<Home3 />} />
-        <Route path="/home4" element={<Home4 />} />
         <Route path="/signup" element={<Signup />} />
+        
+        <Route path="/homeadmin" element={<HomeAdmin />} />
+        <Route path="/homefc" element={<HomeFc />} />
+        <Route path="/homemanager" element={<HomeManager />} />
+        <Route path="/homeemployee" element={<HomeEmployee />} />
+      
       </Routes>
     </BrowserRouter>
   );
