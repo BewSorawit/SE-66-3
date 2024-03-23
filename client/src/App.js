@@ -10,10 +10,10 @@ import HomeAdmin from './components/HomeAdmin';
 import Shift from './components/Shift';
 import ScheduleForm from './components/ScheduleForm';
 
-// import FCviews from './components/FCviews';
-// import SendToManager from './components/SendToManager';
-// import ManagerView from './components/ManagerView';
-// import UpdateStatusFC from './components/UpdateStatusFC';
+import FCviews from './components/FCviews';
+import SendToManager from './components/SendToManager';
+import ManagerView from './components/ManagerView';
+import UpdateStatusFC from './components/UpdateStatusFC';
 
 import HomeFc from './components/HomeFc';
 import HomeManager from './components/HomeManager';
@@ -98,13 +98,13 @@ const App = () => {
           </Route>
 
           {/* Name and fa */}
-          {/* <Route>
+          <Route>
             <Route path='/FcView' element={<FCviews />}></Route>
             <Route path="/FcView/send/:absenceID" element={<SendToManager />}></Route>
             <Route path='/ManagerView' element={<ManagerView />}></Route>
             <Route path='/ManagerView/sendFC/:absenceID' element={<ManagerView />}></Route>
             <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC />}></Route>
-          </Route> */}
+          </Route>
 
 
         </Route>

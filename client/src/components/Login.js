@@ -7,15 +7,12 @@ function Login() {
         email: '',
         passwordUser: ''
     });
-    // const [use, setUser] = useState([])
-
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
 
     const handleInput = (event) => (
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }))
-    
-        );
+    );
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -57,19 +54,21 @@ function Login() {
                 </div>
                 <form action='' onSubmit={handleSubmit}>
                     <div className='mb-3'>
-                        <label htmlFor='email'><strong>Email</strong></label>
-                        <input type='email' placeholder='Enter Email' name='email'
-                            onChange={handleInput} className='form-control rounded-0' />
+                        <label htmlFor='inputEmail'><strong>Email</strong></label>
+                        <input type='email' id='inputEmail' placeholder='Enter Email' name='email'
+                            onChange={handleInput} className='form-control rounded-0' autoComplete='email' />
+
                         {errors.email && <span className='text-danger'>{errors.email}</span>}
                     </div>
                     <div className='mb-3'>
-                        <label htmlFor='passwordUser'><strong>Password</strong></label>
-                        <input type='password' placeholder='Enter Password' name='passwordUser'
+                        <label htmlFor='inputPassword'><strong>Password</strong></label>
+                        <input type='password' id='inputPassword' placeholder='Enter Password' name='passwordUser'
                             onChange={handleInput} className='form-control rounded-0' />
                         {errors.passwordUser && <span className='text-danger'>{errors.passwordUser}</span>}
                     </div>
                     <button type='submit' className='btn btn-success w-100 rounded-0'>Log in</button>
                 </form>
+
             </div>
         </div>
     );
