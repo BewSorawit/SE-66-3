@@ -69,9 +69,29 @@ const checkDuplicateTypeTime = async (req, res) => {
   }
 };
 
+const deleteTypeTimeById = async (req, res) => {
+  try {
+    const { id } = req.params; // รับ ID ที่ต้องการลบจาก req.params
+
+    // ลบข้อมูล type time ตาม ID ในฐานข้อมูล
+    const deletedTypeTime = await TypeTime.destroy({ where: { timeID: id } });
+
+    if (!deletedTypeTime) {
+      return res.status(404).json({ error: 'Type time not found' });
+    }
+
+    // ส่งข้อมูล type time ที่ถูกลบกลับไปยัง client
+    res.status(200).json({ message: 'Type time deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting type time by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getAllTypeTimes,
   createTypeTime,
   getTypeTimeById,
-  checkDuplicateTypeTime
+  checkDuplicateTypeTime,
+  deleteTypeTimeById 
 };
