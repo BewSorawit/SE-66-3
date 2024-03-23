@@ -4,6 +4,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Import BrowserRouter, Routes, and Route
 
 import Shift from './components/Shift'; // Import Shift component
+import ShiftManager from './components/shiftManager'; 
 import ScheduleForm from './components/ScheduleForm'; // Import ScheduleForm component
 
 import Login from './components/Login'; // Import Login component
@@ -30,7 +31,7 @@ const App = () => {
 
         {/* Bew and Focus */}
         <Route path="/shift" element={<Shift />} />
-        <Route path="/shift" element={<Shift />} />
+        <Route path="/shiftManager" element={<ShiftManager />} />
         <Route path="/schedule" element={<ScheduleForm />} />
         <Route path="/schedule" element={<ScheduleForm />} />
 
