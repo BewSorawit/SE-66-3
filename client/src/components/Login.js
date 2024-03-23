@@ -37,7 +37,11 @@ function Login() {
                     } else if(res.data.roleID === "R04"){ //  Fc 
                         alert("Login success");
                         navigate('/homefc' , { state: { user: res.data }} );
-                    }else{
+                    }else if(res.data.roleID === "R05"){   // chief shift
+                        alert("Login success");
+                        navigate('' , { state: { user: res.data }} );
+                    }  
+                    else{
                          alert("No record existed");
                     }
                 })
