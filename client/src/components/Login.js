@@ -21,15 +21,25 @@ function Login() {
             axios.post(`${process.env.REACT_APP_API_URL}/login`, values)
                 .then(res => {
                     console.log(res.data);
-                    if (res.data.roleID === "1") {
+                    // The role ID must be the same in the mysql 'roleID'  'roleName'
+                    if (res.data.roleID === "R01") {   // Admin 
                         alert("Login success");
-                        navigate('/shift', { state: { user: res.data } }); // ส่งข้อมูลผู้ใช้ไปยังหน้า Shift.js
-                    } else if (res.data.roleID === "2") {
-                        navigate('/shift', { state: { user: res.data } });
-                    } else if (res.data.roleID === "3") {
-                        navigate('/shift', { state: { user: res.data } });
-                    } else {
-                        alert("No record existed");
+                        navigate('/homeadmin' , { state: { user: res.data }} );
+                    } else if (res.data.roleID === "R02") {  //  Employee
+                        alert("Login success");
+                        navigate('/homeemployee' , { state: { user: res.data }} );
+                    } else if (res.data.roleID === "R03") { // Manager
+                        alert("Login success");
+                        navigate('/homemanager' , { state: { user: res.data }} );
+                    } else if(res.data.roleID === "R04"){ //  Fc 
+                        alert("Login success");
+                        navigate('/homefc' , { state: { user: res.data }} );
+                    }else if(res.data.roleID === "R05"){   // chief shift
+                        alert("Login success");
+                        navigate('' , { state: { user: res.data }} );
+                    }  
+                    else{
+                         alert("No record existed");
                     }
                 })
                 .catch(err => console.log(err));
