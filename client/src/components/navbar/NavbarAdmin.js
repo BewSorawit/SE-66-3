@@ -5,10 +5,10 @@ export default function NavbarAdmin() {
 
     return (<nav className="nav" >
         <h3 className="site-title" >
-            Project SE 
+            Project SE
         </h3>
         <h4 className="site-title-b2 " >
-            Admin 
+            Admin
         </h4>
 
         <ul>

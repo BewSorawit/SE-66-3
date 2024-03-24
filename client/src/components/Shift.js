@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import axios from 'axios';
 
-const Shift = () => {
-    const location = useLocation();
+
+const Shift = ({ user }) => {
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // ดึงข้อมูลผู้ใช้ที่ส่งมาจาก location object
-                const user = location.state.user;
-                console.log(user);
+                if(!user) return;
+
                 // ดึงข้อมูลตารางเวลาเข้างานที่ต้องการแสดง
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
                 
@@ -49,7 +47,7 @@ const Shift = () => {
             }
         };
         fetchData();
-    }, [location]);
+    }, [user]);
 
     // Function to format time (HH:MM)
     const formatTime = (dateTime) => {

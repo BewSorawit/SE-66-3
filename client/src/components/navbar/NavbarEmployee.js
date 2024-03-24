@@ -1,33 +1,25 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom"
-import "./stylesNavbarEmployee.css"
+import React from "react";
+import { Link } from "react-router-dom";
+import "./stylesNavbarEmployee.css";
 
-export default function NavbarAdmin() {
-
-    return (<nav className="nav" >
-        <h3 className="site-title" >
-            Project SE
-        </h3>
-        <h4 className="site-title-b2" >
-            Employee
-        </h4>
-
-        <ul>
-            <CustomLink to="">Schedule</CustomLink>
-            <CustomLink to="">Leave</CustomLink>
-            <CustomLink to="/">Log out</CustomLink>
-        </ul>
-    </nav>
-    )
-}
-
-function CustomLink({ to, children, ...props }) {
-    const resolvedPath = useResolvedPath(to)
-    const isActive = useMatch({ path: resolvedPath.pathname, end: true })
+export default function NavbarEmployee() {
     return (
-        <li className={isActive ? "active" : ""}>
-            <Link to={to} {...props}>
-                {children}
+        <nav className="nav">
+            <h3 className="site-title">Project SE</h3>
+            <Link to="/homeemployee" className="nav-link"> {/* Link to home page */}
+                <h4 className="site-title-b2">Employee</h4> {/* Make the h4 element a link */}
             </Link>
-        </li>
-    )
+            <ul>
+                <li>
+                    <Link to="/employeeShift">Schedule</Link>
+                </li>
+                <li>
+                    <Link to="">Leave</Link>
+                </li>
+                <li>
+                    <Link to="/">Log out</Link>
+                </li>
+            </ul>
+        </nav>
+    );
 }

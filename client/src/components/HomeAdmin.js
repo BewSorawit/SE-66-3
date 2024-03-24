@@ -1,50 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom'; 
 
-
-
-function HomeAdmin() {
-    const location = useLocation();
-
-    const [user, setUser] = useState([])
+const HomeAdmin = ({ user }) => {
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        // Fetch schedules and times from the server
         const fetchData = async () => {
             try {
-                const user = location.state.user;
+                if (!user) return; // ตรวจสอบว่า user มีค่าหรือไม่
+
                 const userResponse = await axios.get(`${process.env.REACT_APP_API_URL}/users/all`);
-                
-                // Filter out the events where branchID matches the user's branchID
-                const filteredData = userResponse.data.filter( variable =>
-                            variable.branchID ===  user.branchID );
-                
-                console.log(filteredData)
-                setUser(filteredData);
-            
+                const filteredData = userResponse.data.filter(variable => variable.branchID === user.branchID);
+                setUsers(filteredData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
         fetchData();
-    }, [])
+    }, [user]); // ระบุ user เป็น dependency ของ useEffect
 
-    // delete function         not finish  
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:8080/delete/${id}`)
+        axios.delete(`${process.env.REACT_APP_API_URL}/delete/${id}`)
             .then(res => {
                 console.log(res);
-                // ให้ทำการอัปเดต state หรือทำการรีเฟรชหน้าเว็บตามต้องการ
+                // Update state or refresh page as needed
             })
             .catch(err => console.log(err));
     }
 
-
     return (
         <div className='d-flex justify-content-center align-items-center bg-Light min-vh-100'>
             <div className='bg-white p-3 rounded w-75'>
-
                 <div className='d-flex justify-content-end'>
                     <Link to="/signup" className='btn btn-warning w-100 '>Add</Link>
                 </div>
@@ -61,7 +48,7 @@ function HomeAdmin() {
                         </tr>
                     </thead>
                     <tbody>
-                        {user.map((user, index) => (
+                        {users.map((user, index) => (
                             <tr key={index}>
                                 <td>{user.userID}</td>
                                 <td>{user.firstName}</td>
@@ -71,12 +58,9 @@ function HomeAdmin() {
                                 <td>{user.passwordUser}</td>
                                 <td>
                                     <div className='d-flex justify-content-end'>
-
-                                        <Link to={'/edit/${user.ID}'} className='btn btn-sm btn-primary mx-2'>Edit</Link>
+                                        <Link to={`/edit/${user.ID}`} className='btn btn-sm btn-primary mx-2'>Edit</Link>
                                         <button onClick={() => handleDelete(user.ID)} className='btn btn-sm btn-danger'>Delete</button>
-
                                     </div>
-
                                 </td>
                             </tr>
                         ))}
@@ -87,4 +71,4 @@ function HomeAdmin() {
     )
 }
 
-export default HomeAdmin
+export default HomeAdmin;
