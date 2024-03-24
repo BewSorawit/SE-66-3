@@ -5,13 +5,18 @@ import 'react-time-picker/dist/TimePicker.css';
 import axios from 'axios';
 import moment from "moment";
 import { Table, Button } from 'react-bootstrap';
+import { useUser } from './UserContext';
+// import { useNavigate } from 'react-router-dom';
 
 
-const ShiftManager = () => {
+
+const TimeManager = () => {
   const [timeId, setTimeId] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [typetimes, setTypetimes] = useState([]);
+  const { user } = useUser();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTypetimes = async () => {
@@ -23,7 +28,12 @@ const ShiftManager = () => {
       }
     };
 
+    
+
+    console.log("ใหม่time");
+    console.log(user);
     fetchTypetimes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleInputTimeIdChange = (event) => {
@@ -38,9 +48,14 @@ const ShiftManager = () => {
 
     if (!startMoment.isValid() || !endMoment.isValid()) return '';
 
+    if (endMoment.isBefore(startMoment)) {
+      endMoment.add(1, 'day');
+    }
     const duration = moment.duration(endMoment.diff(startMoment));
     const hours = duration.hours();
     const minutes = duration.minutes();
+
+
 
     return `${hours} ชั่วโมง ${minutes < 10 ? '' : ''}${minutes} นาที`;
   };
@@ -73,11 +88,6 @@ const ShiftManager = () => {
     }
   };
 
-  const handleEdit = (typetimeId) => {
-    // ตัวอย่างการทำงานแก้ไขข้อมูล ให้นำไปปรับใช้ตามลำดับของโปรเซส API ที่ใช้
-    console.log(`Editing typetime with ID: ${typetimeId}`);
-  };
-
   const handleDelete = async (typetimeId) => {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_API_URL}/typetimes/delete/${typetimeId}`);
@@ -93,15 +103,26 @@ const ShiftManager = () => {
     }
   };
 
+  //กันคนเข้าผ่านลิ้งค์โดยไม่ล็อคอิน
+  // useEffect(() => {
+  //   if (!user || (user.role !== '2' && user.role !== '3')) {
+  //     // หาก Role ไม่ใช่ 2 หรือ 3 ไม่ให้แสดงหน้านี้
+  //     navigate('/'); // ส่งไปหน้าหลักหรือหน้าที่ต้องการ
+  //   }
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user]);
+
   return (
-    <section className="rounded border mx-auto border-3" style={{ width: '1300px', margin: '50px', padding: '25px' }}>
+    <div className='bg-success' style={{ minHeight: '100vh', padding: '50px' }}>
+      <section className="rounded border mx-auto border-3 bg-white" style={{ width: '1300px', padding: '25px' }}>
       <div>
         <h5>รายละเอียดทั่วไป</h5>
         <div className="mb-3" style={{ width: '400px' }}>
-          <label className="form-label">รหัสกะการทำงาน</label>
+          <label className="form-label">รหัสเวลากะการทำงาน</label>
           <input type="text" className="form-control border-2" id="timeId" placeholder='Txx (x = เลข)' value={timeId} onChange={handleInputTimeIdChange} />
         </div>
-        <div>
+        <div className="mt-5">
           <div className="d-flex mt-4">
             <div className="d-inline">
               <p>เวลาเริ่มต้นกะ</p>
@@ -113,32 +134,21 @@ const ShiftManager = () => {
             </div>
             <div className="d-inline mx-5">
               <label className="form-label">ชั่วโมงการทำงาน</label>
-              <input type="text" className="form-control border-2" id="hourDiff" value={calculateHoursDifference()} style={{width: '300px'}} readOnly />
+              <input type="text" className="form-control border-2" id="hourDiff" value={calculateHoursDifference()} style={{ width: '300px' }} readOnly />
             </div>
-            <div className="d-inline mt-3 pull-right float-right" style={{ paddingTop: '17px', paddingLeft: '100px'}}>
-            <button className="btn btn-success" onClick={addData} style={{width: '100px'}}>Save</button>
+            <div className="d-inline mt-3 pull-right float-right" style={{ paddingTop: '17px', paddingLeft: '100px' }}>
+              <button className="btn btn-success" onClick={addData} style={{ width: '100px' }}>Save</button>
+            </div>
           </div>
-          </div>
-          {/* <div className="mt-3">
-            <button className="btn btn-success" onClick={addData}>Save</button>
-          </div> */}
         </div>
-        <div className = "" style={{ marginTop: '40px', width: '400px', maxHeight: '150px', overflowY: 'auto' }}>
+        <p style={{ marginTop: '60px'}}>จัดการเวลากะการทำงาน</p>
+        <div className="" style={{ width: '400px', maxHeight: '144px', overflowY: 'auto' }}>
           <Table striped bordered hover >
-            {/* <thead>
-              <tr>
-                
-                <th>Time ID</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-              </tr>
-            </thead> */}
             <tbody>
               {typetimes.map((typetime) => (
                 <tr key={typetime.timeID}>
-                  <td>{typetime.timeID}: {typetime.timeStart} - {typetime.timeEnd}</td>
+                  <td>{typetime.timeID}: {moment(typetime.timeStart, 'HH:mm').format('HH:mm')} - {moment(typetime.timeEnd, 'HH:mm').format('HH:mm')}</td>
                   <td style={{ textAlign: 'center' }}>
-                    {/* <Button variant="info" size="sm" onClick={() => handleEdit(typetime.timeID)}>Edit</Button>{' '} */}
                     <Button variant="danger" size="sm" onClick={() => handleDelete(typetime.timeID)}>Delete</Button>
                   </td>
                 </tr>
@@ -148,7 +158,8 @@ const ShiftManager = () => {
         </div>
       </div>
     </section>
+    </div>
   );
 };
 
-export default ShiftManager;
+export default TimeManager;

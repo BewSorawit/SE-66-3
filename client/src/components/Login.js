@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import UserContext from './UserContext'; // เปลี่ยนเป็น UserContext จาก './UserProvider'
 
 function Login() {
+    const { login } = useContext(UserContext); // เปลี่ยนจาก UserProvider เป็น UserContext
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         email: '',
         passwordUser: ''
     });
-    const navigate = useNavigate();
     const [errors, setErrors] = useState({});
 
     const handleInput = (event) => (
@@ -23,11 +25,16 @@ function Login() {
                     console.log(res.data);
                     if (res.data.roleID === "1") {
                         alert("Login success");
-                        navigate('/shift', { state: { user: res.data } }); // ส่งข้อมูลผู้ใช้ไปยังหน้า Shift.js
+                        login(res.data);
+                        navigate('/home'); 
                     } else if (res.data.roleID === "2") {
-                        navigate('/shift', { state: { user: res.data } });
+                        alert("Login success");
+                        login(res.data);
+                        navigate('/shift'); 
                     } else if (res.data.roleID === "3") {
-                        navigate('/shift', { state: { user: res.data } });
+                        alert("Login success");
+                        login(res.data);
+                        navigate('/shiftManagementPage'); 
                     } else {
                         alert("No record existed");
                     }
