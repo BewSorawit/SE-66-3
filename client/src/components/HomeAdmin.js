@@ -10,7 +10,7 @@ const HomeAdmin = ({ user }) => {
             try {
                 if (!user) return; // ตรวจสอบว่า user มีค่าหรือไม่
 
-                const userResponse = await axios.get(`${process.env.REACT_APP_API_URL}/users/all`);
+                const userResponse = await axios.get(`${process.env.REACT_APP_API_URL}/users/getAllUsersAndBranchAndRole`);
                 const filteredData = userResponse.data.filter(variable => variable.branchID === user.branchID);
                 setUsers(filteredData);
             } catch (error) {
@@ -43,7 +43,9 @@ const HomeAdmin = ({ user }) => {
                             <th>surName</th>
                             <th>email</th>
                             <th>dateBirth</th>
-                            <th>passwordUser</th>
+                            {/* <th>passwordUser</th> */}
+                            <th>Branch</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -55,7 +57,9 @@ const HomeAdmin = ({ user }) => {
                                 <td>{user.surName}</td>
                                 <td>{user.email}</td>
                                 <td>{user.dateBirth}</td>
-                                <td>{user.passwordUser}</td>
+                                {/* <td>{user.passwordUser}</td> */}
+                                <td>{user.branch.branchName}</td>
+                                <td>{user.typerole.roleName}</td>
                                 <td>
                                     <div className='d-flex justify-content-end'>
                                         <Link to={`/edit/${user.ID}`} className='btn btn-sm btn-primary mx-2'>Edit</Link>
