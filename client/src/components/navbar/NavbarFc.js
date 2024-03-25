@@ -34,7 +34,7 @@ function CustomLink({ to, children, ...props }) {
 
 
 
-{/* <DropdownButton id="split-button-dropdown " title="Schedule" className="" >
-    <Dropdown.Item eventKey="1"><CustomLink to="/">Manage Time</CustomLink></Dropdown.Item>
-    <Dropdown.Item eventKey="2"><CustomLink to="/">Add Schedule</CustomLink></Dropdown.Item>
-</DropdownButton> */}
+//  <DropdownButton id="split-button-dropdown " title="Schedule" className="" >
+//     <Dropdown.Item eventKey="1"><CustomLink to="/">Manage Time</CustomLink></Dropdown.Item>
+//     <Dropdown.Item eventKey="2"><CustomLink to="/">Add Schedule</CustomLink></Dropdown.Item>
+// </DropdownButton> 
