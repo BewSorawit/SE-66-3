@@ -68,6 +68,11 @@ const App = () => {
       console.error('Error logging in:', error);
     }
   };
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user'); // เมื่อออกจากระบบลบข้อมูลผู้ใช้ออกจาก localStorage
+};
+
   return (
     <Router>
       <Routes>
@@ -76,28 +81,33 @@ const App = () => {
         <Route >
           {/* Admin Routes */}
           {user && user.roleID === "1" && (
-            <Route element={<AppLayoutAdmin />}>
-              <Route path="/homedmin" element={<HomeAdmin user={user} />} />
+            <Route element={<AppLayoutAdmin handleLogout={handleLogout}/>}>
+              <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
               <Route path="/signup" element={<Signup user={user} />} />
               <Route path="/adminShift" element={<Shift user={user} />} />
+              <Route path='/FcView' element={<FCviews user={user}/>}></Route>
+              
             </Route>
           )}
 
           {/* Employee Routes */}
           {user && user.roleID === "3" && (
             <Route element={<AppLayoutEmployee />} >
-              <Route path="/homeemployee" element={<HomeEmployee user={user} />} />
+              <Route path="/homeEmployee" element={<HomeEmployee user={user} />} />
               <Route path="/employeeShift" element={<Shift user={user} />} />
             </Route>
           )}
 
-          <Route element={<AppLayoutManager />} >
-            <Route path="/homemanager" element={<HomeManager />} />
-            <Route path="/managerShift" element={<Shift user={user} />} />
-          </Route>
+          {user && user.roleID === "2" && (
+            <Route element={<AppLayoutManager />} >
+              <Route path="/homeManager" element={<HomeManager user={user} />} />
+              <Route path="/employeeShift" element={<Shift user={user} />} />
+            </Route>
+          )}
+
 
           <Route element={<AppLayoutFc />} >
-            <Route path="/homefc" element={<HomeFc />} />
+            <Route path="/homeFc" element={<HomeFc />} />
             {/* <Route path="/shift" element={<Shift />} /> */}
           </Route>
 
@@ -114,6 +124,7 @@ const App = () => {
 
           {/* Fallback Route */}
           <Route path="*" element={<Login setUser={handleLogin} />} />
+        
         </Route>
       </Routes>
     </Router>

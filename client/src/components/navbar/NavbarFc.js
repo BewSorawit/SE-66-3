@@ -12,7 +12,7 @@ export default function NavbarAdmin() {
         </h4>
 
         <ul>
-            <CustomLink to="/">View ดูคำร้อง </CustomLink>
+            <CustomLink to="/FcView">View ดูคำร้อง </CustomLink>
             <CustomLink to="/">Approve Leave</CustomLink>
             <CustomLink to="/">Log out</CustomLink>
         </ul>

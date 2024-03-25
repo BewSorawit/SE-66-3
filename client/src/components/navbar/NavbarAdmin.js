@@ -1,7 +1,7 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import "./stylesNavbarAdmin.css"
 
-export default function NavbarAdmin() {
+export default function NavbarAdmin({ handleLogout }) {
 
     return (<nav className="nav" >
         <h3 className="site-title" >
@@ -12,9 +12,10 @@ export default function NavbarAdmin() {
         </h4>
 
         <ul>
-            <CustomLink to="/homeadmin">Home Admin</CustomLink>
+            <CustomLink to="/homeAdmin">Home Admin</CustomLink>
             <CustomLink to="/signup">Sign up</CustomLink>
-            <CustomLink to="/">Log out</CustomLink>
+            {/* <CustomLink to="/FcView"></CustomLink> */}
+            <CustomLink to="/" onClick={handleLogout}>Log out</CustomLink>
         </ul>
     </nav>
     )

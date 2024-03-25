@@ -13,6 +13,9 @@ export default function NavbarAdmin() {
             </h4>
 
             <ul>
+                <li>
+                    <Link to="/employeeShift">Schedule</Link>
+                </li>
                 <CustomLink to="/">Manage Time</CustomLink>
                 <CustomLink to="/">Add Schedule</CustomLink>
                 <CustomLink to="/">Leave ( ลา ) </CustomLink>

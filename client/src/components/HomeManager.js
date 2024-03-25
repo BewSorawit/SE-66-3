@@ -1,6 +1,6 @@
 import React from 'react'
 
-function HomeManager() {
+function HomeManager({ user }) {
     return (
         <div>Home Manager</div>
     )
