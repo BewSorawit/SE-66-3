@@ -95,7 +95,6 @@ const App = () => {
             <Route element={<AppLayoutManager />} >
               <Route path="/homemanager" element={<HomeManager />} />
               <Route path="/managerShift" element={<Shift user={user} />} />
-              <Route path="/ManagerEditSchedule" element={<ManagerEditSchedule user={user} />} /> 
             </Route>
           )}
 
