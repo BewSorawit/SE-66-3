@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
-
 import Login from './components/Login';
 import Signup from './components/Signup';
 import HomeAdmin from './components/HomeAdmin';
 
 import Shift from './components/Shift';
-import ScheduleForm from './components/ScheduleForm';
-
 import FCviews from './components/FCviews';
 import SendToManager from './components/SendToManager';
 import ManagerView from './components/ManagerView';
@@ -60,42 +58,52 @@ const AppLayoutFc = () => (
 // );
 
 const App = () => {
+  const [user, setUser] = useState(null);
+
+  const handleLogin = async (values) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, values);
+      setUser(response.data);
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+  };
   return (
     <Router>
       <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login setUser={handleLogin} />} />
 
-        {/* Protected Routes */}
         <Route >
+          {/* Admin Routes */}
+          {user && user.roleID === "1" && (
+            <Route element={<AppLayoutAdmin />}>
+              <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
+              <Route path="/signup" element={<Signup user={user} />} />
+              <Route path="/adminShift" element={<Shift user={user} />} />
+            </Route>
+          )}
 
-          {/* Admin Routes  Route can retack by switch but i don't know why  */}
-          <Route element={<AppLayoutAdmin />}>
-            <Route path="/homeadmin" element={<HomeAdmin />} />
-            <Route path="/signup" element={<Signup />} />
-          </Route>
+          {/* Employee Routes */}
+          {user && user.roleID === "3" && (
+            <Route element={<AppLayoutEmployee />} >
+              <Route path="/homeemployee" element={<HomeEmployee user={user} />} />
+              <Route path="/employeeShift" element={<Shift user={user} />} />
+            </Route>
+          )}
 
+          {user && user.roleID === "2" && (
+            <Route element={<AppLayoutManager />} >
+              <Route path="/homemanager" element={<HomeManager />} />
+              <Route path="/managerShift" element={<Shift user={user} />} />
+            </Route>
+          )}
 
-          <Route element={<AppLayoutEmployee />} >
-            <Route path="/homeemployee" element={<HomeEmployee />} />
-          </Route>
-
-          <Route element={<AppLayoutManager />} >
-            <Route path="/homemanager" element={<HomeManager />} />
-          </Route>
-          
           <Route element={<AppLayoutFc />} >
             <Route path="/homefc" element={<HomeFc />} />
+            {/* <Route path="/shift" element={<Shift />} /> */}
           </Route>
 
 
-          {/* Bew and Focus Routes */}
-          <Route>
-            <Route path="/shift" element={<Shift />} />
-            <Route path="/shift" element={<Shift />} />
-            <Route path="/schedule" element={<ScheduleForm />} />
-            <Route path="/schedule" element={<ScheduleForm />} />
-          </Route>
 
           {/* Name and fa */}
           <Route>
@@ -106,9 +114,9 @@ const App = () => {
             <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC />}></Route>
           </Route>
 
-
+          {/* Fallback Route */}
+          <Route path="*" element={<Login setUser={handleLogin} />} />
         </Route>
-
       </Routes>
     </Router>
   );

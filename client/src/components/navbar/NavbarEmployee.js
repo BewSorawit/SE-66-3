@@ -1,33 +1,36 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom"
-import "./stylesNavbarEmployee.css"
+import React from "react";
+import { Link } from "react-router-dom";
+import "./stylesNavbarEmployee.css";
 
-export default function NavbarAdmin() {
-
-    return (<nav className="nav" >
-        <h3 className="site-title" >
-            Project SE
-        </h3>
-        <h4 className="site-title-b2" >
-            Employee
-        </h4>
-
-        <ul>
-            <CustomLink to="">Schedule</CustomLink>
-            <CustomLink to="">Leave</CustomLink>
-            <CustomLink to="/">Log out</CustomLink>
-        </ul>
-    </nav>
-    )
-}
-
-function CustomLink({ to, children, ...props }) {
-    const resolvedPath = useResolvedPath(to)
-    const isActive = useMatch({ path: resolvedPath.pathname, end: true })
+export default function NavbarEmployee() {
     return (
-        <li className={isActive ? "active" : ""}>
-            <Link to={to} {...props}>
-                {children}
+        <nav className="nav">
+            <h3 className="site-title p-3 ">Project SE</h3>
+            
+            <Link to="/homeemployee" className="nav-link p-3 mt-1 mp-1 "> {/* Link to home page */}
+                <h4 className="site-title-b2">Employee</h4> {/* Make the h4 element a link */}
             </Link>
-        </li>
-    )
+            
+            <ul className="p-3 mt-1 mp-1" >
+                <li>
+                    <Link to="/employeeShift">Schedule</Link>
+                </li>
+                <li>
+                    <Link to="">Leave</Link>
+                </li>
+                <li>
+                    <Link to="/">Home</Link>
+                </li>
+                <li>
+                    <Link to="/">Log out</Link>
+                </li>
+            </ul>
+        </nav>
+    );
 }
+
+
+// <DropdownButton id="split-button-dropdown " title="Schedule" className="" >
+//     <Dropdown.Item eventKey="1"><CustomLink to="/">Manage Time</CustomLink></Dropdown.Item>
+//     <Dropdown.Item eventKey="2"><CustomLink to="/">Add Schedule</CustomLink></Dropdown.Item>
+// </DropdownButton>

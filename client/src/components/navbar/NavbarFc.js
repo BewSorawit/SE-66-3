@@ -11,7 +11,7 @@ export default function NavbarAdmin() {
             Fc
         </h4>
 
-        <ul>
+        <ul className="p-3 mt-1 mp-1" >
             <CustomLink to="/">View ดูคำร้อง </CustomLink>
             <CustomLink to="/">Approve Leave</CustomLink>
             <CustomLink to="/">Log out</CustomLink>
@@ -31,3 +31,10 @@ function CustomLink({ to, children, ...props }) {
         </li>
     )
 }
+
+
+
+//  <DropdownButton id="split-button-dropdown " title="Schedule" className="" >
+//     <Dropdown.Item eventKey="1"><CustomLink to="/">Manage Time</CustomLink></Dropdown.Item>
+//     <Dropdown.Item eventKey="2"><CustomLink to="/">Add Schedule</CustomLink></Dropdown.Item>
+// </DropdownButton> 
