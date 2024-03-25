@@ -77,7 +77,7 @@ const App = () => {
           {/* Admin Routes */}
           {user && user.roleID === "1" && (
             <Route element={<AppLayoutAdmin />}>
-              <Route path="/homedmin" element={<HomeAdmin user={user} />} />
+              <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
               <Route path="/signup" element={<Signup user={user} />} />
               <Route path="/adminShift" element={<Shift user={user} />} />
             </Route>
@@ -91,10 +91,13 @@ const App = () => {
             </Route>
           )}
 
-          <Route element={<AppLayoutManager />} >
-            <Route path="/homemanager" element={<HomeManager />} />
-            <Route path="/managerShift" element={<Shift user={user} />} />
-          </Route>
+          {user && user.roleID === "2" && (
+            <Route element={<AppLayoutManager />} >
+              <Route path="/homemanager" element={<HomeManager />} />
+              <Route path="/managerShift" element={<Shift user={user} />} />
+              <Route path="/ManagerEditSchedule" element={<ManagerEditSchedule user={user} />} /> 
+            </Route>
+          )}
 
           <Route element={<AppLayoutFc />} >
             <Route path="/homefc" element={<HomeFc />} />
