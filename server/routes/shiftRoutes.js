@@ -1,7 +1,7 @@
 // project/server/routes/shiftRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAllShifts, createShift, createShiftWeb, checkDuplicateShift, getAllShiftsForPage } = require('../controllers/shiftController');
+const { getAllShifts, createShift, createShiftWeb, checkDuplicateShift, getAllShiftsForPage, deleteShiftByID } = require('../controllers/shiftController');
 
 // GET all shifts
 router.get('/shifts/all', getAllShifts);
@@ -14,5 +14,8 @@ router.post('/shifts/createShiftWeb', createShiftWeb);
 router.get('/shifts/check/:id', checkDuplicateShift);
 
 router.get('/shifts/allPage', getAllShiftsForPage);
+
+router.delete('/shifts/delete/:id', deleteShiftByID);
+
 
 module.exports = router;

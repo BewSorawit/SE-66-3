@@ -116,4 +116,20 @@ const getAllShiftsForPage = async (req, res) => {
     }
 };
 
-module.exports = { getAllShifts, createShift, createShiftWeb, checkDuplicateShift, getAllShiftsForPage };
+const deleteShiftByID = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedShift = await Shift.destroy({ where: { shiftID: id } });
+        if (deletedShift) {
+            res.status(200).json({ message: 'Shift deleted successfully.' });
+        } else {
+            res.status(404).json({ error: 'Shift not found.' });
+        }
+    } catch (error) {
+        console.error('Error deleting shift:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+module.exports = { getAllShifts, createShift, createShiftWeb, checkDuplicateShift, getAllShiftsForPage, deleteShiftByID };

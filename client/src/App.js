@@ -7,6 +7,7 @@ import { UserProvider } from './components/UserContext';
 import Shift from './components/Shift'; // Import Shift component
 import TimeManager from './components/timeManager';
 import AddShiftPage from './components/addShiftPage';
+import AddShiftDetailPage from './components/addShiftDetailPage';
 import ShiftManagementPage from './components/shiftManagementPage';
 import ScheduleForm from './components/ScheduleForm'; // Import ScheduleForm component
 
@@ -36,8 +37,9 @@ const App = () => {
           <Route path="/timeManager" element={<TimeManager />} />
           <Route path="/shiftManagementPage" element={<ShiftManagementPage />} />
           <Route path="/shiftManagementPage/addShiftPage" element={<AddShiftPage />} />
+          <Route path="/shiftManagementPage/addShiftDetailPage" element={<AddShiftDetailPage />} />
           <Route path="/schedule" element={<ScheduleForm />} />
-
+          
           {/* Name and fa */}
           <Route path='/FcView' element={<FCviews />} />
           <Route path="/FcView/send/:absenceID" element={<SendToManager />} />

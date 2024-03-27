@@ -34,7 +34,7 @@ function Login() {
                     } else if (res.data.roleID === "3") {
                         alert("Login success");
                         login(res.data);
-                        navigate('/shiftManagementPage'); 
+                        navigate('/shiftManagementPage/addShiftDetailPage'); 
                     } else {
                         alert("No record existed");
                     }

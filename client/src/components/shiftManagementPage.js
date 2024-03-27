@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from './UserContext';
+import { Link } from 'react-router-dom';
+
 
 function ShiftManagementPage() {
     const [shift, setShift] = useState([]);
@@ -46,14 +48,24 @@ function ShiftManagementPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleEdit = (shiftID) => {
-        // ตัวอย่างการแก้ไขข้อมูลด้วย shiftID
-        console.log("Edit shift with ID:", shiftID);
-    };
+    // const handleEdit = (shiftID) => {
+    //     // ตัวอย่างการแก้ไขข้อมูลด้วย shiftID
+    //     console.log("Edit shift with ID:", shiftID);
+    // };
 
-    const handleDelete = (shiftID) => {
-        // ตัวอย่างการลบข้อมูลด้วย shiftID
-        console.log("Delete shift with ID:", shiftID);
+    const handleDelete = async (shiftID) => {
+        try {
+            const confirmed = window.confirm('Are you sure you want to delete this shift?');
+            if (!confirmed) return; // ถ้าผู้ใช้ยกเลิกการลบ
+    
+            // เรียก API ลบ Shift
+            await axios.delete(`${process.env.REACT_APP_API_URL}/shifts/delete/${shiftID}`);
+    
+            fetchShift();
+        } catch (error) {
+            console.error('Error deleting shift:', error);
+            // ดำเนินการเพิ่มโค้ดเพื่อแสดงข้อความผิดพลาดหรือดำเนินการอื่นๆ ตามที่ต้องการ
+        }
     };
 
     return (
@@ -61,8 +73,8 @@ function ShiftManagementPage() {
             <section className="rounded border mx-auto border-3 bg-white" style={{ width: '1300px', padding: '25px' }}>
                 <h2 style={{ display: 'inline' }}>Shift List</h2>
                 <div className="me-5" style={{ display: 'inline', alignItems: 'center', float: 'right', paddingTop:'10px' }}>
-                    <input type="text" placeholder="Search..." style={{ marginRight: '20px' }} />
-                    <button className="btn btn-primary">Add</button>
+                    {/* <input type="text" placeholder="Search..." style={{ marginRight: '20px' }} /> */}
+                    <Link to="./addShiftPage" className="btn btn-primary">Add</Link>
                 </div>
                 <table className="table" style={{ textAlign: 'center' }}>
                     <thead>
@@ -82,7 +94,7 @@ function ShiftManagementPage() {
                                 <td style={{ paddingTop: '15px' }}>{shiftItem.end.toLocaleDateString('en-GB')} - {shiftItem.end.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>
                                 <td style={{ paddingTop: '15px' }}>{shiftItem.branch}</td>
                                 <td>
-                                    <button className="btn btn-primary" onClick={() => handleEdit(shiftItem.shiftID)}>Edit</button>
+                                    {/* <button className="btn btn-primary" onClick={() => handleEdit(shiftItem.shiftID)}>Edit</button> */}
                                     <button className="btn btn-danger ms-3" onClick={() => handleDelete(shiftItem.shiftID)}>Delete</button>
                                 </td>
                             </tr>

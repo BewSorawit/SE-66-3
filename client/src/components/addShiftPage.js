@@ -5,6 +5,8 @@ import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useUser } from './UserContext';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const AddShiftPage = () => {
@@ -14,11 +16,12 @@ const AddShiftPage = () => {
   const [selectedTypetime, setSelectedTypetime] = useState('');
   const [hourDiff, setHourDiff] = useState('');
   const { user } = useUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
     date.setHours(7, 0, 0, 0);
     fetchTypetimes();
-    console.log("ใหม่shift");
+    console.log("ใหม่addshift");
     console.log(user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -79,7 +82,7 @@ const AddShiftPage = () => {
             branchID: user.branchID
           });
           window.alert('Data saved successfully.');
-          window.location.reload();
+          navigate('/shiftManagementPage'); 
         } catch (error) {
           console.error('Error creating type time:', error);
           window.alert('Failed to save data.');
