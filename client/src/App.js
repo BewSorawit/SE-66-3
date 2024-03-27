@@ -12,6 +12,8 @@ import FCviews from './components/FCviews';
 import SendToManager from './components/SendToManager';
 import ManagerView from './components/ManagerView';
 import UpdateStatusFC from './components/UpdateStatusFC';
+import FcCheck from './components/FcCheck';
+import FcCheckDetail from './components/FcCheckDetail';
 
 import HomeFc from './components/HomeFc';
 import HomeManager from './components/HomeManager';
@@ -21,6 +23,7 @@ import NavbarAdmin from './components/navbar/NavbarAdmin';
 import NavbarEmployee from './components/navbar/NavbarEmployee';
 import NavbarManager from './components/navbar/NavbarManager';
 import NavbarFc from './components/navbar/NavbarFc';
+import InfoModal from './components/InfoModal';
 
 const AppLayoutAdmin = () => (
   <>
@@ -77,7 +80,7 @@ const App = () => {
           {/* Admin Routes */}
           {user && user.roleID === "1" && (
             <Route element={<AppLayoutAdmin />}>
-              <Route path="/homedmin" element={<HomeAdmin user={user} />} />
+              <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
               <Route path="/signup" element={<Signup user={user} />} />
               <Route path="/adminShift" element={<Shift user={user} />} />
             </Route>
@@ -91,10 +94,16 @@ const App = () => {
             </Route>
           )}
 
+          {user && user.roleID === "2" && (
           <Route element={<AppLayoutManager />} >
-            <Route path="/homemanager" element={<HomeManager />} />
+            <Route path="/homemanager" element={<HomeManager user={user} />} />
             <Route path="/managerShift" element={<Shift user={user} />} />
+            
+            <Route path='/ManagerView' element={<ManagerView user = {user} />}></Route>
+            <Route path='/ManagerView/sendFC/:absenceID' element={<InfoModal user = {user}/>}></Route>
+
           </Route>
+          )}
 
           <Route element={<AppLayoutFc />} >
             <Route path="/homefc" element={<HomeFc />} />
@@ -108,7 +117,9 @@ const App = () => {
             <Route path='/FcView' element={<FCviews />}></Route>
             <Route path="/FcView/send/:absenceID" element={<SendToManager />}></Route>
             <Route path='/ManagerView' element={<ManagerView />}></Route>
-            <Route path='/ManagerView/sendFC/:absenceID' element={<ManagerView />}></Route>
+            <Route path='/ManagerView/sendFC/:absenceID' element={<InfoModal />}></Route>
+            <Route path='/FcCheck' element={<FcCheck />}></Route>
+            <Route path='/FcCheck/send/:absenceID' element={<FcCheckDetail />}></Route>
             <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC />}></Route>
           </Route>
 

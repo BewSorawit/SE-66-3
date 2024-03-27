@@ -3,38 +3,20 @@ import axios from "axios";
 import "./Creative.css";
 import { Link } from "react-router-dom";
 
-function ManagerView({user}) {
-  const [mana, setmana] = useState([]);
+function FcCheck() {
+  const [FcChecks, setFcCheck] = useState([]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_API_URL}/ManagerView`)
-  //     .then((res) => setmana(res.data))
-  //     .catch((err) => console.log(err));
-  // }, []);
-
-  //ส่งไปนอกสาขา ไม่รวมสาขาตัวเอง
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sentOutbranch = await axios.get(
-          `${process.env.REACT_APP_API_URL}/ManagerView`
-        );
-        const filterSendOutbranch = sentOutbranch.data.filter(
-          (data) => data.branchID !== user.branchID 
-        );
-        setmana(filterSendOutbranch);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [user]);
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/FcCheck`)
+      .then((res) => setFcCheck(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
-    <div className=" d-flex  modalBackground bg-success justify-content-center align-items-center">
+    <div className=" d-flex  modalBackground  sarabun bg-success justify-content-center align-items-center">
       <div className="w-80 bg-white rounded p-3 sarabun">
-        <table className="table fonttext2">
+        <table className="table fonttext2 sarabun">
           <thead>
             <tr>
               <th>สาขาที่ต้องการ</th>
@@ -46,7 +28,7 @@ function ManagerView({user}) {
             </tr>
           </thead>
           <tbody>
-            {mana.map((data, i) => (
+            {FcChecks.map((data, i) => (
               <tr key={i}>
                 <td>{data.branchName}</td>
                 <td>{data.date}</td>
@@ -54,12 +36,14 @@ function ManagerView({user}) {
                 <td>{data.timeEnd}</td>
 
                 <td>
-                  <button className="btn btn-primary ">{data.status}</button>
+                  <button className="btn btn-primary ">
+                    {data.statusMana}
+                  </button>
                 </td>
 
                 <td>
                   <Link
-                    to={`/ManagerView/sendFC/${data.absenceID}`}
+                    to={`/FcCheck/send/${data.absenceID}`}
                     className="btn btn-warning"
                   >
                     รายละเอียด
@@ -74,4 +58,4 @@ function ManagerView({user}) {
   );
 }
 
-export default ManagerView;
+export default FcCheck;

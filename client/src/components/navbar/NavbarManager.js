@@ -17,7 +17,7 @@ export default function NavbarAdmin() {
                 <CustomLink to="/">Add Schedule</CustomLink>
                 <CustomLink to="/">Leave ( ลา ) </CustomLink>
                 <CustomLink to="/">Contact to Fc </CustomLink>
-
+                <CustomLink to="/ManagerView">ดูคำขอพนักงานจากสาขาอื่น</CustomLink>
                 <CustomLink to="/">Log out</CustomLink>
             </ul>
 
