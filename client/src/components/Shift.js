@@ -22,8 +22,7 @@ const Shift = ({ user }) => {
                 // console.log("filterUserInbranch", filterUserInbranch);
                 setUserInbranch(filterUserInbranch);
 
-
-                // Filter out the events where absenceId is null and branchID matches the user's branchID
+                 // Filter out the events where absenceId is null and branchID matches the user's branchID
                 const filteredData = shiftDetailResponse.data.filter(shiftDetail =>
                     shiftDetail.absenceID === null && shiftDetail.shift.branchID === user.branchID
                 );

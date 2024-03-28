@@ -17,7 +17,7 @@ const login = async (req, res) => {
         });
         if (user) {
             console.log(req.body);
-            // ส่งข้อมูลผู้ใช้กลับไปยังไคลเอนต์
+            req.session.user = user;
             return res.json(user);
         } else {
             return res.json("Fail");

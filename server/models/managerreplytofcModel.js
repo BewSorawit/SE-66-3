@@ -4,16 +4,19 @@ const { sequelize } = require('../database/db');
 
 const ManagerReplyToFC = sequelize.define('managerreplytofc', {
     replyID: {
-        type: DataTypes.STRING(10),
+        // type: DataTypes.STRING(10),
+        type: DataTypes.INTEGER(),
+        autoIncrement: true,
         primaryKey: true
+
     },
     userID: {
         type: DataTypes.STRING(10),
-        allowNull: false
+        allowNull: true
     },
     absenceID: {
         type: DataTypes.STRING(10),
-        allowNull: false
+        allowNull: true
     },
     status: {
         type: DataTypes.ENUM('yes', 'no'),

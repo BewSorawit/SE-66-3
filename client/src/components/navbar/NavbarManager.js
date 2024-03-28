@@ -16,11 +16,11 @@ export default function NavbarAdmin() {
                 <li>
                     <Link to="/employeeShift">Schedule</Link>
                 </li>
-                <CustomLink to="/">Manage Time</CustomLink>
+                <CustomLink to="/ManagerView">Manage Time</CustomLink>
                 <CustomLink to="/">Add Schedule</CustomLink>
                 <CustomLink to="/">Leave ( ลา ) </CustomLink>
                 <CustomLink to="/">Contact to Fc </CustomLink>
-
+                <CustomLink to="/test">Test </CustomLink>
                 <CustomLink to="/">Log out</CustomLink>
             </ul>
 

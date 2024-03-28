@@ -23,7 +23,8 @@ function FcCheck() {
               <th>วันที่ต้องการ</th>
               <th>เวลาเริ่มงาน</th>
               <th>เวลาเลิกงาน</th>
-              <th>สถานะ</th>
+              
+              {/* <th>สถานะ</th> */}
               <th>รายละเอียด</th>
             </tr>
           </thead>
@@ -35,11 +36,11 @@ function FcCheck() {
                 <td>{data.timeStart}</td>
                 <td>{data.timeEnd}</td>
 
-                <td>
+                {/* <td>
                   <button className="btn btn-primary ">
                     {data.statusMana}
                   </button>
-                </td>
+                </td> */}
 
                 <td>
                   <Link
