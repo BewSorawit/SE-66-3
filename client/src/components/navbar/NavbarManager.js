@@ -4,11 +4,17 @@ import "./stylesNavbarManager.css"
 
 export default function NavbarAdmin() {
 
+    const handleLogout = () => {
+        // setUser(null);
+        localStorage.removeItem('user'); // เมื่อออกจากระบบลบข้อมูลผู้ใช้ออกจาก localStorage
+      };
+
     return (
         <nav className="nav" >
             <h3 className="site-title  p-2" >
                 Project SE
             </h3>
+            
             <h4 className="site-title-b2" >
                 <CustomLink to="/">Manager</CustomLink>
             </h4>
@@ -37,7 +43,7 @@ export default function NavbarAdmin() {
                 <CustomLink to="/ManagerEditSchedule">Home</CustomLink>
 
                 {/* Contact */}
-                <CustomLink to="/">Log out</CustomLink>
+                <CustomLink to="/" >Log out</CustomLink>
 
 
 

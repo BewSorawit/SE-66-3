@@ -3,6 +3,11 @@ import "./stylesNavbarFc.css"
 
 export default function NavbarAdmin() {
 
+    const handleLogout = () => {
+        // setUser(null);
+        localStorage.removeItem('user'); // เมื่อออกจากระบบลบข้อมูลผู้ใช้ออกจาก localStorage
+      };
+
     return (<nav className="nav" >
         <h3 className="site-title" >
             Project SE
@@ -12,9 +17,9 @@ export default function NavbarAdmin() {
         </h4>
 
         <ul className="p-3 mt-1 mp-1" >
-            <CustomLink to="/">View ดูคำร้อง </CustomLink>
-            <CustomLink to="/">Approve Leave</CustomLink>
-            <CustomLink to="/">Log out</CustomLink>
+            <CustomLink to="/FcView">ดูคำร้องที่ส่งมา</CustomLink>
+            <CustomLink to="/">ดูคำร้องที่ตอบกลับ</CustomLink>
+            <CustomLink to="/" >Log out</CustomLink>
         </ul>
     </nav>
     )
