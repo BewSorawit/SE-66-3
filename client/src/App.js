@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 import Login from './components/Login';
 import Signup from './components/Signup';
 import HomeAdmin from './components/HomeAdmin';
+import EditUser from './components/EditUser';
 
 import Shift from './components/Shift';
 import FCviews from './components/FCviews';
@@ -21,6 +22,8 @@ import NavbarAdmin from './components/navbar/NavbarAdmin';
 import NavbarEmployee from './components/navbar/NavbarEmployee';
 import NavbarManager from './components/navbar/NavbarManager';
 import NavbarFc from './components/navbar/NavbarFc';
+
+
 
 const AppLayoutAdmin = () => (
   <>
@@ -68,18 +71,30 @@ const App = () => {
       console.error('Error logging in:', error);
     }
   };
+
+  const handleLogout = () => {
+    // setUser(null);
+    localStorage.removeItem('user'); // เมื่อออกจากระบบลบข้อมูลผู้ใช้ออกจาก localStorage
+  };
+
+
+  
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login setUser={handleLogin} />} />
 
+
         <Route >
           {/* Admin Routes */}
           {user && user.roleID === "1" && (
             <Route element={<AppLayoutAdmin />}>
+              
               <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
               <Route path="/signup" element={<Signup user={user} />} />
               <Route path="/adminShift" element={<Shift user={user} />} />
+              <Route path="/EditUser/:id" element={<EditUser />} />
+              
             </Route>
           )}
 
@@ -98,21 +113,32 @@ const App = () => {
             </Route>
           )}
 
-          <Route element={<AppLayoutFc />} >
-            <Route path="/homefc" element={<HomeFc />} />
-            {/* <Route path="/shift" element={<Shift />} /> */}
-          </Route>
+          {user && user.roleID === "4" && (
+            <Route element={<AppLayoutFc />} >
 
+              <Route path="/homefc" element={<HomeFc />} />
+              <Route path='/FcView' element={<FCviews />}></Route>
+              <Route path="/FcView/send/:absenceID" element={<SendToManager />}></Route>
+              <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC />}></Route>
+              {/* <Route path="/shift" element={<Shift />} /> */}
+
+            </Route>
+          )}
 
 
           {/* Name and fa */}
           <Route>
-            <Route path='/FcView' element={<FCviews />}></Route>
-            <Route path="/FcView/send/:absenceID" element={<SendToManager />}></Route>
+
             <Route path='/ManagerView' element={<ManagerView />}></Route>
             <Route path='/ManagerView/sendFC/:absenceID' element={<ManagerView />}></Route>
-            <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC />}></Route>
+
           </Route>
+
+
+            {/* Logout Route */}
+          <Route path="/logout" element={<Logout handleLogout={handleLogout} />} />
+
+
 
           {/* Fallback Route */}
           <Route path="*" element={<Login setUser={handleLogin} />} />
@@ -121,5 +147,15 @@ const App = () => {
     </Router>
   );
 };
+
+const Logout = ({ handleLogout }) => {
+  // เรียกใช้งาน handleLogout เมื่อ component ถูก render
+  // ซึ่งจะทำให้ผู้ใช้ logout และกลับไปยังหน้า login โดยอัตโนมัติ
+  handleLogout();
+  return null;
+};
+
+
+
 
 export default App;

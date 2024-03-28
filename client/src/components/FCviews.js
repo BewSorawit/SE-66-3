@@ -17,7 +17,7 @@ function FCviews() {
     
     <div className=' d-flex  modalBackground  sarabun bg-success justify-content-center align-items-center'>
   
-        <div className='w-80 bg-white rounded p-3 sarabun'>
+        <div className='w-80 bg-white rounded p-3 sarabun '>
          
             <table className='table fonttext2 sarabun'>
                 <thead>

@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 import "./stylesNavbarEmployee.css";
 
 export default function NavbarEmployee() {
+    
+    const handleLogout = () => {
+        // setUser(null);
+        localStorage.removeItem('user'); // เมื่อออกจากระบบลบข้อมูลผู้ใช้ออกจาก localStorage
+      };
+    
     return (
         <nav className="nav">
             <h3 className="site-title p-3 ">Project SE</h3>
@@ -22,7 +28,7 @@ export default function NavbarEmployee() {
                     <Link to="/">Home</Link>
                 </li>
                 <li>
-                    <Link to="/">Log out</Link>
+                    <Link to="/" >Log out</Link>
                 </li>
             </ul>
         </nav>

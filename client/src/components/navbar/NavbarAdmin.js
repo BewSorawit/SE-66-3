@@ -1,24 +1,40 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
 import "./stylesNavbarAdmin.css"
 
+// const handleLogout = () => {
+//     // setUser(null);
+//     localStorage.removeItem('user'); // เมื่อออกจากระบบลบข้อมูลผู้ใช้ออกจาก localStorage
+//   };
+
+
+
 export default function NavbarAdmin() {
+    // const NavbarAdmin = ({ handleLogout }) => {
+        
+    const handleLogout = () => {
+        // setUser(null);
+        localStorage.removeItem('user'); // เมื่อออกจากระบบลบข้อมูลผู้ใช้ออกจาก localStorage
+      };
+    
+        return (<nav className="nav" >
+                    <h3 className="site-title p-2" >
+                        Project SE
+                    </h3>
+                    <h4 className="site-title-b2 " >
+                        <CustomLink to="/homeadmin">Admin</CustomLink>
+                    </h4>
 
-    return (<nav className="nav" >
-        <h3 className="site-title p-2" >
-            Project SE
-        </h3>
-        <h4 className="site-title-b2 " >
-            <CustomLink to="/homeadmin">Admin</CustomLink>
-        </h4>
+                    <ul className="p-3 mt-1 mp-1" >
+                        <CustomLink to="/homeadmin">Home</CustomLink>
+                        <CustomLink to="/">Logout</CustomLink>
+                    
+                    </ul>
+                </nav>
+        )
 
-        <ul className="p-3 mt-1 mp-1" >
-            <CustomLink to="/signup">Sign up</CustomLink>
-            <CustomLink to="/homeadmin">Home</CustomLink>
-            <CustomLink to="/">Log out</CustomLink>
-        </ul>
-    </nav>
-    )
-}
+    }
+// }
+
 
 function CustomLink({ to, children, ...props }) {
     const resolvedPath = useResolvedPath(to)
