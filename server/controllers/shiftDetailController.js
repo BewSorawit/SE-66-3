@@ -14,13 +14,13 @@ const getAllShiftDetails = async (req, res) => {
 };
 
 // Get all shift details with associated data
-const getShowShift = async (req, res) => {
+const getShowShiftDetail = async (req, res) => {
     try {
         const shiftDetails = await ShiftDetail.findAll({
             include: [
                 {
                     model: User,
-                    attributes: ['firstName','branchID'] // Include the firstName from the User table
+                    attributes: ['firstName', 'surName', 'branchID'] // Include the firstName from the User table
                 },
                 {
                     model: Shift,
@@ -74,5 +74,56 @@ const createShiftDetail = async (req, res) => {
     }
 };
 
+const createShiftDetailWeb = async (req, res) => {
+    const { shiftID, userID, status, statusCL } = req.body;
+    if (!shiftID || !userID || !status || !statusCL) {
+        return res.status(400).json({ error: 'shiftID, userID, status and statusCL are required!' });
+    }
+    try {
+        let newShiftDetailID;
+        let lastShiftDetail = await ShiftDetail.findOne({ order: [['shiftDetailID', 'DESC']] });
 
-module.exports = { getAllShiftDetails, createShiftDetail, getShowShift };
+        if (lastShiftDetail) {
+            const lastID = lastShiftDetail.shiftDetailID;
+            const lastIDNumber = parseInt(lastID.substr(2)); 
+            const newIDNumber = lastIDNumber + 1;
+            newShiftDetailID = `SD${newIDNumber.toString().padStart(2, '0')}`;
+        } else {
+            newScheduleID = 'SD01'; 
+        }
+        
+        const shiftDetail = await ShiftDetail.create({
+            shiftDetailID: newShiftDetailID,
+            shiftID: shiftID,
+            userID: userID,
+            status: status,
+            statusCL:statusCL,
+            absenceID: null
+        });
+        res.status(201).json(shiftDetail);
+    } catch (error) {
+        console.error('Error creating shift:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+const deleteShiftDetailByID = async (req, res) => {
+    const { shiftDetailID } = req.params;
+    try {
+        // ลบ ShiftDetail จาก shiftDetailID
+        const deletedShiftDetail = await ShiftDetail.destroy({ where: { shiftDetailID: shiftDetailID } });
+        
+        // ตรวจสอบว่าลบสำเร็จหรือไม่
+        if (deletedShiftDetail) {
+            res.status(204).end();
+        } else {
+            res.status(404).json({ error: 'ShiftDetail not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting shift detail:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
+module.exports = { getAllShiftDetails, createShiftDetail, getShowShiftDetail, createShiftDetailWeb, deleteShiftDetailByID };

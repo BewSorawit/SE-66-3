@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from './UserContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 function ShiftManagementPage() {
     const [shift, setShift] = useState([]);
     const { user } = useUser();
+    const navigate = useNavigate();
 
     const fetchShift = async () => {
         try {
@@ -48,10 +49,9 @@ function ShiftManagementPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // const handleEdit = (shiftID) => {
-    //     // ตัวอย่างการแก้ไขข้อมูลด้วย shiftID
-    //     console.log("Edit shift with ID:", shiftID);
-    // };
+    const assignShift = (shift) => {
+        navigate('/shiftManagementPage/addShiftDetailPage', { state: { shift: shift } });
+    };
 
     const handleDelete = async (shiftID) => {
         try {
@@ -94,7 +94,7 @@ function ShiftManagementPage() {
                                 <td style={{ paddingTop: '15px' }}>{shiftItem.end.toLocaleDateString('en-GB')} - {shiftItem.end.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>
                                 <td style={{ paddingTop: '15px' }}>{shiftItem.branch}</td>
                                 <td>
-                                    {/* <button className="btn btn-primary" onClick={() => handleEdit(shiftItem.shiftID)}>Edit</button> */}
+                                    <button className="btn btn-primary" onClick={() => assignShift(shiftItem)} >Assign Shift</button>
                                     <button className="btn btn-danger ms-3" onClick={() => handleDelete(shiftItem.shiftID)}>Delete</button>
                                 </td>
                             </tr>
