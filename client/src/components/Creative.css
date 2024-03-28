@@ -1,123 +1,144 @@
 
 
 .modalBackground {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(25, 135, 84);
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modalContainer {
-    
-    width: 480px;
-    height: 400px;
-    border-radius: 18px;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    display: flex;
-    flex-direction: column;
-    padding: 9px;
-  }
-  
-  .modalContainer .title {
-    display: inline-block;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .titleCloseBtn {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .titleCloseBtn button {
-    background-color: transparent;
-    border: none;
-    font-size: 25px;
-    cursor: pointer;
-  }
-  
-  .modalContainer .body {
-    flex: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.7rem;
-    text-align: center;
-  }
-  
-  .modalContainer .footer {
-    flex: 20%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modalContainer .footer button {
-    width: 150px;
-    height: 45px;
-    margin: 10px;
-    border: none;
-    background-color: cornflowerblue;
-    color: white;
-    border-radius: 8px;
-    font-size: 20px;
-    cursor: pointer;
-  }
-  
-  #cancelBtn {
-    background-color: crimson;
-  }
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(25, 135, 84);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .margin{
-    max-width: 65px;
-    margin: auto;
-  }
+.modalContainer {
+  
+  width: 400px;
+  height: 300px;
+  border-radius: 18px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 9px;
+}
+.modalManagerToFc {
+  margin: auto;
+  width: 480px;
+  height: 500px;
+  border-radius: 18px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
 
-  .marginafter{
-    max-width: 70px;
-    margin: auto;
-  }
+.modalFcCheckDetail {
+  width: 480px;
+  height: 400px;
+  border-radius: 18px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+}
 
-  .navbar {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: white;
-    
- 
+.modalContainer .title {
+  display: inline-block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.titleCloseBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.titleCloseBtn button {
+  background-color: transparent;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.modalContainer .body {
+  flex: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+.modalContainer .footer {
+  flex: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer .footer button {
+  width: 150px;
+  height: 45px;
+  margin: 10px;
+  border: none;
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#cancelBtn {
+  background-color: crimson;
+}
+
+.margin{
+  max-width: 65px;
+  margin: auto;
+}
+
+.marginafter{
+  max-width: 70px;
+  margin: auto;
+}
+
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  
+
 }
 
 nav {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: white;
- 
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+
 }
 
 .fonttext{
-  font-size:20px;
-  color:gray;
-  text-align:left;
-  max-width: 350px;
+font-size:20px;
+color:black;
+text-align:left;
+max-width: 350px;
 }
 
 .fonttext2{
-  font-family: "Sarabun", sans-serif;
-  font-size:20px;
-  text-align:center;
+font-family: "Sarabun", sans-serif;
+font-size:20px;
+text-align:center;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 .sarabun{
-    font-family: "Sarabun", sans-serif;
-    font-weight: 360;
-    font-style: normal;
+  font-family: "Sarabun", sans-serif;
+  font-weight: 360;
+  font-style: normal;
 
 }
- 
