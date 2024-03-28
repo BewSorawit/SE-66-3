@@ -5,7 +5,7 @@ const { mysqlConnection } = require("../database/db");
 
 const db = mysqlConnection;
 router.get("/FcView", (req, res) => {
-  const sql = `SELECT absences.absenceID as absenceID, branches.branchName as branchName, DATE_FORMAT(schedules.date,'%e %M %Y') AS date,
+  const sql = `SELECT branches.branchID as branchID, absences.absenceID as absenceID, branches.branchName as branchName, DATE_FORMAT(schedules.date,'%e %M %Y') AS date,
     typetimes.timeStart as timeStart, typetimes.timeEnd as timeEnd, absences.status as status
     FROM (((((shifts INNER JOIN branches ON shifts.branchID = branches.branchID)
     INNER JOIN schedules ON schedules.scheduleID = shifts.scheduleID)
@@ -156,7 +156,7 @@ router.post("/ManagerView/saveDataUser", (req, res) => {
 });
 
 router.get("/FcCheck", (req, res) => {
-  const sql = `SELECT 
+  const sql = `SELECT branches.branchID as branchID,
   managerreplytofcs.status AS statusMana,
   IFNULL(users.firstName, 'Unknown') AS firstName,
   absences.absenceID AS absenceID,

@@ -3,15 +3,23 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Creative.css";
 
-function FCviews() {
+function FCviews({user}) {
   const [FCviews, setFCviews] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/FcView`)
-      .then((res) => setFCviews(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+    const fetchData = async () => {
+      try {
+        const sentOutbranch = await axios.get(`${process.env.REACT_APP_API_URL}/FcView`);
+        const filterSendOutbranch = sentOutbranch.data.filter(
+          (data) => data.branchID === user.branchID
+        );
+        setFCviews(filterSendOutbranch);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [user]);
 
   return (
     <div className=" d-flex  modalBackground  sarabun bg-success justify-content-center align-items-center">

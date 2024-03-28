@@ -1,7 +1,7 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom"
+import { Link, useMatch } from "react-router-dom"
 import "./stylesNavbarManager.css"
 
-export default function NavbarAdmin() {
+export default function NavbarAdmin({ handleLogout }) {
 
     return (
         <nav className="nav" >
@@ -16,12 +16,12 @@ export default function NavbarAdmin() {
                 <li>
                     <Link to="/employeeShift">Schedule</Link>
                 </li>
+
                 <CustomLink to="/ManagerView">Manage Time</CustomLink>
-                <CustomLink to="/">Add Schedule</CustomLink>
-                <CustomLink to="/">Leave ( ลา ) </CustomLink>
-                <CustomLink to="/">Contact to Fc </CustomLink>
-                <CustomLink to="/test">Test </CustomLink>
-                <CustomLink to="/">Log out</CustomLink>
+                <CustomLink to="#">Add Schedule</CustomLink>
+                <CustomLink to="#">Leave ( ลา ) </CustomLink>
+                <CustomLink to="#">Contact to Fc </CustomLink>
+                <CustomLink to="/" onClick={handleLogout}>Log out</CustomLink>
             </ul>
 
         </nav>
@@ -29,13 +29,12 @@ export default function NavbarAdmin() {
 }
 
 function CustomLink({ to, children, ...props }) {
-    const resolvedPath = useResolvedPath(to)
-    const isActive = useMatch({ path: resolvedPath.pathname, end: true })
+    const isActive = useMatch(to);
     return (
         <li className={isActive ? "active" : ""}>
             <Link to={to} {...props}>
                 {children}
             </Link>
         </li>
-    )
+    );
 }

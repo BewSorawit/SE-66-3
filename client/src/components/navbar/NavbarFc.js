@@ -1,7 +1,7 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom"
+import { Link, useMatch } from "react-router-dom"
 import "./stylesNavbarFc.css"
 
-export default function NavbarAdmin() {
+export default function NavbarAdmin({ handleLogout }) {
 
     return (<nav className="nav" >
         <h3 className="site-title" >
@@ -13,21 +13,21 @@ export default function NavbarAdmin() {
 
         <ul>
             <CustomLink to="/FcView">View ดูคำร้อง </CustomLink>
-            <CustomLink to="/">Approve Leave</CustomLink>
-            <CustomLink to="/">Log out</CustomLink>
+            <CustomLink to="#">Approve Leave</CustomLink>
+            <CustomLink to="/" onClick={handleLogout}>Log out</CustomLink>
         </ul>
     </nav>
     )
 }
 
+
 function CustomLink({ to, children, ...props }) {
-    const resolvedPath = useResolvedPath(to)
-    const isActive = useMatch({ path: resolvedPath.pathname, end: true })
+    const isActive = useMatch(to);
     return (
         <li className={isActive ? "active" : ""}>
             <Link to={to} {...props}>
                 {children}
             </Link>
         </li>
-    )
+    );
 }

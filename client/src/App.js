@@ -34,23 +34,23 @@ const AppLayoutAdmin = ({ handleLogout, children }) => (
   </>
 );
 
-const AppLayoutEmployee = ({ children }) => (
+const AppLayoutEmployee = ({ handleLogout, children }) => (
   <>
-    <NavbarEmployee />
+    <NavbarEmployee handleLogout={handleLogout} />
     <Outlet />
   </>
 );
 
-const AppLayoutManager = ({ children }) => (
+const AppLayoutManager = ({ handleLogout, children }) => (
   <>
-    <NavbarManager />
+    <NavbarManager handleLogout={handleLogout} />
     <Outlet />
   </>
 );
 
-const AppLayoutFc = ({ children }) => (
+const AppLayoutFc = ({ handleLogout, children }) => (
   <>
-    <NavbarFc />
+    <NavbarFc handleLogout={handleLogout} />
     <Outlet />
   </>
 );
@@ -63,6 +63,7 @@ const App = () => {
     if (loggedInUser) {
       setUser(JSON.parse(loggedInUser));
     }
+
   }, []);
 
   const handleLogin = async (values) => {
@@ -75,39 +76,67 @@ const App = () => {
     }
   };
 
+
   const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
+    if (window.confirm('Are you sure you want to log out?')) {
+      setUser(null);
+      localStorage.removeItem('user');
+      return <Navigate to="/" />;
+    } else {
+      return null;
+    }
   };
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={user ? <Navigate to="/homeAdmin" /> : <Login setUser={handleLogin} />} />
+        <Route
+          path="/"
+          element={user ? (
+            user.roleID === "1" ? (
+              <Navigate to="/homeAdmin" />
+            ) : user.roleID === "2" ? (
+              <Navigate to="/homeManager" />
+            ) : user.roleID === "3" ? (
+              <Navigate to="/homeEmployee" />
+            ) : user.roleID === "4" ? (
+              <Navigate to="/homeFc" />
+            ) : null
+          ) : (
+            <Login setUser={handleLogin} />
+          )}
+        />
 
         {/* Admin Routes */}
-        <Route element={<AppLayoutAdmin handleLogout={handleLogout} />}>
-          <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
-          <Route path="/signup" element={<Signup user={user} />} />
-          <Route path="/adminShift" element={<Shift user={user} />} />
-          <Route path="/FcView" element={<FCviews user={user} />} />
-        </Route>
+        {user && user.roleID === "1" && (
+          <Route element={<AppLayoutAdmin handleLogout={handleLogout} />}>
+            <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
+            <Route path="/signup" element={<Signup user={user} />} />
+            <Route path="/adminShift" element={<Shift user={user} />} />
+            <Route path="/FcView" element={<FCviews user={user} />} />
+          </Route>
+        )}
 
         {/* Employee Routes */}
-        <Route element={<AppLayoutEmployee />} >
-          <Route path="/homeEmployee" element={<HomeEmployee user={user} />} />
-          <Route path="/employeeShift" element={<Shift user={user} />} />
-        </Route>
+        {user && user.roleID === "3" && (
+          <Route element={<AppLayoutEmployee handleLogout={handleLogout} />} >
+            <Route path="/homeEmployee" element={<HomeEmployee user={user} />} />
+            <Route path="/employeeShift" element={<Shift user={user} />} />
+          </Route>
+        )}
 
-        <Route element={<AppLayoutManager />} >
-          <Route path="/homeManager" element={<HomeManager user={user} />} />
-          <Route path="/employeeShift" element={<Shift user={user} />} />
-        </Route>
+        {user && user.roleID === "2" && (
+          <Route element={<AppLayoutManager handleLogout={handleLogout} />} >
+            <Route path="/homeManager" element={<HomeManager user={user} />} />
+            <Route path="/employeeShift" element={<Shift user={user} />} />
+          </Route>
+        )}
 
-        <Route element={<AppLayoutFc />} >
-          <Route path="/homeFc" element={<HomeFc />} />
-        </Route>
-
+        {user && user.roleID === "4" && (
+          <Route element={<AppLayoutFc handleLogout={handleLogout} />} >
+            <Route path="/homeFc" element={<HomeFc />} />
+          </Route>
+        )}
         {/* Name and fa */}
         <Route>
           <Route path='/FcView' element={<FCviews user={user} />}></Route>
@@ -118,6 +147,7 @@ const App = () => {
           <Route path='/FcCheck/send/:absenceID' element={<FcCheckDetail />}></Route>
           <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC user={user} />}></Route>
         </Route>
+
 
         <Route path='/test' element={<Test user={user} />}></Route>
       </Routes>

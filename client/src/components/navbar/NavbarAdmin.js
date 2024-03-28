@@ -19,6 +19,7 @@ export default function NavbarAdmin({ handleLogout }) {
     );
 }
 
+
 function CustomLink({ to, children, ...props }) {
     const isActive = useMatch(to);
     return (

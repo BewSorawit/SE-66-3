@@ -3,15 +3,23 @@ import axios from "axios";
 import "./Creative.css";
 import { Link } from "react-router-dom";
 
-function FcCheck() {
+function FcCheck({ user }) {
   const [FcChecks, setFcCheck] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/FcCheck`)
-      .then((res) => setFcCheck(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+    const fetchData = async () => {
+      try {
+        const sentOutbranch = await axios.get(`${process.env.REACT_APP_API_URL}/FcCheck`);
+        const filterSendOutbranch = sentOutbranch.data.filter(
+          (data) => data.branchID === user.branchID
+        );
+        setFcCheck(filterSendOutbranch);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, [user]);
 
   return (
     <div className=" d-flex  modalBackground  sarabun bg-success justify-content-center align-items-center">
@@ -23,7 +31,6 @@ function FcCheck() {
               <th>วันที่ต้องการ</th>
               <th>เวลาเริ่มงาน</th>
               <th>เวลาเลิกงาน</th>
-              
               {/* <th>สถานะ</th> */}
               <th>รายละเอียด</th>
             </tr>
