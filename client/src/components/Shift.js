@@ -8,7 +8,6 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 
 const Shift = ({ user }) => {
     const [events, setEvents] = useState([]);
-    const [userInbranch, setUserInbranch] = useState({})
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -17,12 +16,8 @@ const Shift = ({ user }) => {
                 // ดึงข้อมูลตารางเวลาเข้างานที่ต้องการแสดง
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
 
-                const userInbranch = await axios.get(`${process.env.REACT_APP_API_URL}/users/all`);
-                const filterUserInbranch = userInbranch.data.filter(data => data.branchID === user.branchID && data.roleID !== "2");
-                // console.log("filterUserInbranch", filterUserInbranch);
-                setUserInbranch(filterUserInbranch);
 
-                 // Filter out the events where absenceId is null and branchID matches the user's branchID
+                // Filter out the events where absenceId is null and branchID matches the user's branchID
                 const filteredData = shiftDetailResponse.data.filter(shiftDetail =>
                     shiftDetail.absenceID === null && shiftDetail.shift.branchID === user.branchID
                 );
@@ -78,19 +73,6 @@ const Shift = ({ user }) => {
     return (
 
         <div>
-
-            <div>
-                {userInbranch.length > 0 && userInbranch.map((user) => {
-                    console.log("User ID:", user.userID);
-                    return (
-                        <div key={user.userID}>
-                            {user.firstName}
-                        </div>
-                    );
-                })}
-            </div>
-
-
 
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

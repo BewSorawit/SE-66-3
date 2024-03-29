@@ -3,23 +3,15 @@ import axios from "axios";
 import "./Creative.css";
 import { Link } from "react-router-dom";
 
-function FcCheck({ user }) {
+function FcCheck() {
   const [FcChecks, setFcCheck] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sentOutbranch = await axios.get(`${process.env.REACT_APP_API_URL}/FcCheck`);
-        const filterSendOutbranch = sentOutbranch.data.filter(
-          (data) => data.branchID === user.branchID
-        );
-        setFcCheck(filterSendOutbranch);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [user]);
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/FcCheck`)
+      .then((res) => setFcCheck(res.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className=" d-flex  modalBackground  sarabun bg-success justify-content-center align-items-center">

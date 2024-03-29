@@ -1,6 +1,6 @@
 // project/server/controllers/userController.js
 const { where } = require('sequelize');
-const { User, Branch ,TypeRole} = require('../models');
+const { User, Branch, TypeRole } = require('../models');
 
 // Controller สำหรับดึงข้อมูลผู้ใช้ทั้งหมด
 const getAllUsers = async (req, res) => {
@@ -47,7 +47,7 @@ const getUserBranch = async (req, res) => {
     // ดึงข้อมูลผู้ใช้ทั้งหมดจากฐานข้อมูล
     const users = await User.findAll({
       where: {
-        branchID: "\"" + branchID  + "\""
+        branchID: "\"" + branchID + "\""
       }
     });
     if (users) {
@@ -88,10 +88,30 @@ const createUser = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+const getUserByID = async (req, res) => {
+  try {
+    const { id } = req.params; // รับค่า ID ผู้ใช้จาก request params
+
+    // ค้นหาข้อมูลผู้ใช้โดยใช้ ID
+    const user = await User.findByPk(id);
+
+    // ตรวจสอบว่าพบผู้ใช้หรือไม่
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // ส่งข้อมูลผู้ใช้กลับไปยัง client
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error getting user by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 module.exports = {
   getAllUsers,
   createUser,
   getUserBranch,
-  getAllUsersAndBranchAndRole
+  getAllUsersAndBranchAndRole,
+  getUserByID
 };

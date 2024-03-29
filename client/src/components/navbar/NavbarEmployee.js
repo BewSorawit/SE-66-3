@@ -12,8 +12,9 @@ export default function NavbarEmployee({ handleLogout }) {
             </Link>
             <ul>
                 <CustomLink to="/employeeShift">Schedule</CustomLink>
-                <CustomLink to="#">Leave</CustomLink>
+                <CustomLink to="/leaveFormEmPage">Leave</CustomLink>
                 <CustomLink to="/" onClick={handleLogout}>Log out</CustomLink>
+            
             </ul>
         </nav>
     );

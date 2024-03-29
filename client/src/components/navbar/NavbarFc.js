@@ -12,8 +12,8 @@ export default function NavbarAdmin({ handleLogout }) {
         </h4>
 
         <ul>
-            <CustomLink to="/FcView">View ดูคำร้อง </CustomLink>
-            <CustomLink to="#">Approve Leave</CustomLink>
+            <CustomLink to="/FcView">ดูคำร้องที่ส่งมา</CustomLink>
+            <CustomLink to="/FcCheck">ดูคำร้องที่ตอบกลับ</CustomLink>
             <CustomLink to="/" onClick={handleLogout}>Log out</CustomLink>
         </ul>
     </nav>

@@ -12,7 +12,7 @@ export default function NavbarAdmin({ handleLogout }) {
             </h4>
             <ul>
                 <CustomLink to="/homeAdmin">Home Admin</CustomLink>
-                <CustomLink to="/signup">Sign up</CustomLink>
+                {/* <CustomLink to="/signup">Sign up</CustomLink> */}
                 <CustomLink to="/" onClick={handleLogout}>Log out</CustomLink>
             </ul>
         </nav>

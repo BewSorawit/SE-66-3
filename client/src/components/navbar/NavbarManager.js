@@ -1,4 +1,5 @@
 import { Link, useMatch } from "react-router-dom"
+import { DropdownButton, Dropdown } from "react-bootstrap";
 import "./stylesNavbarManager.css"
 
 export default function NavbarAdmin({ handleLogout }) {
@@ -13,14 +14,19 @@ export default function NavbarAdmin({ handleLogout }) {
             </h4>
 
             <ul>
-                <li>
-                    <Link to="/employeeShift">Schedule</Link>
-                </li>
+                <DropdownButton id="split-button-dropdown " title="Schedule Management" className="" >
+                    <Dropdown.Item eventKey="1"><CustomLink to="/timeManager">Manage Time</CustomLink></Dropdown.Item>
+                    <Dropdown.Item eventKey="2"><CustomLink to="/shiftManagementPage">Add Schedule</CustomLink></Dropdown.Item>
+                </DropdownButton>
 
-                <CustomLink to="/ManagerView">Manage Time</CustomLink>
-                <CustomLink to="#">Add Schedule</CustomLink>
-                <CustomLink to="#">Leave ( ลา ) </CustomLink>
-                <CustomLink to="#">Contact to Fc </CustomLink>
+
+                <DropdownButton id="split-button-dropdown " title="Leave Management" className="" >
+                    <Dropdown.Item eventKey="3"><CustomLink to="/leaveFormMgPage">แจ้งการลา</CustomLink></Dropdown.Item>
+                    <Dropdown.Item eventKey="4"><CustomLink to="/absenceManagePage">จัดการการลาของพนักงาน</CustomLink></Dropdown.Item>
+                </DropdownButton>
+
+                <CustomLink to="/ManagerView">จัดการคำร้องจากนอกสาขา</CustomLink>
+                <CustomLink to="/employeeShift">Schedule</CustomLink>
                 <CustomLink to="/" onClick={handleLogout}>Log out</CustomLink>
             </ul>
 
