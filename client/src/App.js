@@ -37,6 +37,7 @@ import AddShiftPage from './components/addShiftPage';
 import AddShiftDetailPage from './components/addShiftDetailPage';
 import ShiftManagementPage from './components/shiftManagementPage';
 
+import EditUser from './components/EditUser';
 
 const AppLayoutAdmin = ({ handleLogout, children }) => (
   <>
@@ -124,7 +125,7 @@ const App = () => {
             <Route path="/homeAdmin" element={<HomeAdmin user={user} />} />
             <Route path="/signup" element={<Signup user={user} />} />
             <Route path="/adminShift" element={<Shift user={user} />} />
-
+            <Route path="/EditUser/:id" element={<EditUser/>} />
           </Route>
         )}
 

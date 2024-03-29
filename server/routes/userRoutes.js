@@ -1,7 +1,7 @@
 // project/server/routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAllUsers, createUser, getUserByID, getUserBranch, getAllUsersAndBranchAndRole } = require('../controllers/userController');
+const { getAllUsers, getUserByID, getUserBranch, getAllUsersAndBranchAndRole,createUser,deleteUser ,updateUser} = require('../controllers/userController');
 
 // GET all users
 router.get('/users/all', getAllUsers);
@@ -15,5 +15,10 @@ router.post('/users/create', createUser);
 router.get('/users/getAllUsersAndBranchAndRole', getAllUsersAndBranchAndRole);
 
 router.get('/users/:id', getUserByID);
+
+
+router.put('/users/:id', updateUser);
+
+router.delete('/users/delete/:id', deleteUser);
 
 module.exports = router;

@@ -108,10 +108,54 @@ const getUserByID = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('Updated user ID:', id);
+
+    const updatedUser = await User.update(req.body, {
+      where: {
+        userID: id
+      }
+    });
+
+    console.log('Update result:', updatedUser);
+
+    if (updatedUser[0] !== 0) {
+      res.status(200).json({ message: 'User updated successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found or no changes were made' });
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await User.destroy({
+      where: {
+        userID: id
+      }
+    });
+    if (deletedUser) {
+      res.status(200).json({ message: 'User deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getAllUsers,
   createUser,
   getUserBranch,
   getAllUsersAndBranchAndRole,
-  getUserByID
-};
+  getUserByID,
+  updateUser,
+  deleteUser
+}
