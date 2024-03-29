@@ -81,6 +81,7 @@ const getShowShiftDetail = async (req, res) => {
     }
 };
 
+
 // สร้าง ShiftDetail ใหม่
 const createShiftDetail = async (req, res) => {
     const { shiftDetailID, shiftID, userID, status, statusCL, absenceID } = req.body;
@@ -159,4 +160,4 @@ const deleteShiftDetailByID = async (req, res) => {
     }
 };
 
-module.exports = { getAllShiftDetails, createShiftDetail, getShowShift, getShowShiftDetail, createShiftDetailWeb, deleteShiftDetailByID };
+module.exports = {getAllShiftDetails, createShiftDetail, getShowShift, getShowShiftDetail, createShiftDetailWeb, deleteShiftDetailByID };

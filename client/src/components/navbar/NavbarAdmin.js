@@ -7,9 +7,9 @@ export default function NavbarAdmin({ handleLogout }) {
             <h3 className="site-title">
                 Project SE
             </h3>
-            <h4 className="site-title-b2">
-                Admin
-            </h4>
+            <Link to="/homeAdmin" className="nav-link"> {/* Link to home page */}
+                <h4 className="site-title-b2">Admin</h4> {/* Make the h4 element a link */}
+            </Link>
             <ul>
                 <CustomLink to="/homeAdmin">Home Admin</CustomLink>
                 {/* <CustomLink to="/signup">Sign up</CustomLink> */}

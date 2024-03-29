@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import logo from './img/login-image.png';
 
 function Login({ setUser }) {
     const [values, setValues] = useState({
@@ -55,8 +56,9 @@ function Login({ setUser }) {
     return (
         <div className='d-flex justify-content-center align-items-center bg-success vh-100'>
             <div className='bg-white p-3 rounded w-25'>
-                <div className='d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom'>
-                    <h3>Sign in</h3>
+                <div className=' justify-content-md-between d-flex'>
+                    <h3 className='align-items-center d-flex' >Sign in</h3>
+                    <img className='d-flex rounded ' src={logo} alt="Logo" width={75} height={75} />
                 </div>
                 <form action='' onSubmit={handleSubmit}>
                     <div className='mb-3'>
@@ -71,7 +73,7 @@ function Login({ setUser }) {
                             onChange={handleInput} className='form-control rounded-0' />
                         {errors.passwordUser && <span className='text-danger'>{errors.passwordUser}</span>}
                     </div>
-                    <button type='submit' className='btn btn-success w-100 rounded-0'>Log in</button>
+                    <button type='submit' className='btn btn-warning w-100 rounded'>Log in</button>
                 </form>
             </div>
         </div>

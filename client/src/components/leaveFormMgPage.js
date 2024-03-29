@@ -44,7 +44,7 @@ function LeaveFormMgPage({user}) {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/all`);
             const bID = user.branchID;
-            const filteredData = response.data.filter(data => data.branchID === bID && data.roleID === "3");
+            const filteredData = response.data.filter(data => data.branchID === bID && (data.roleID === "3" || data.roleID === "2"));
             setUsers(filteredData);
         } catch (error) {
             console.error('Error fetching typetimes:', error);
