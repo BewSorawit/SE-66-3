@@ -6,6 +6,12 @@ import { UserProvider } from './components/UserContext';
 
 import Shift from './components/Shift'; // Import Shift component
 import TimeManager from './components/timeManager';
+import AbsenceManagePage from './components/absenceManagePage';
+import AbsenceEditEmp from './components/absenceEditEmp';
+import AbsenceSum from './components/absenceSum';
+import AbsenceSelect from './components/absenceSelect';
+import LeaveFormEmPage from './components/leaveFormEmPage';
+import LeaveFormMgPage from './components/leaveFormMgPage';
 import AddShiftPage from './components/addShiftPage';
 import AddShiftDetailPage from './components/addShiftDetailPage';
 import ShiftManagementPage from './components/shiftManagementPage';
@@ -31,10 +37,16 @@ const App = () => {
           <Route path="/home1" element={<Home1 />} />
           <Route path="/home2" element={<Home2 />} />
           <Route path="/home3" element={<Home3 />} />
-
+          
           {/* Bew and Focus */}
           <Route path="/shift" element={<Shift />} />
           <Route path="/timeManager" element={<TimeManager />} />
+          <Route path="/leaveFormEmPage" element={<LeaveFormEmPage />} />
+          <Route path="/absenceSum" element={<AbsenceSum />} />
+          <Route path="/absenceSelect" element={<AbsenceSelect />} />
+          <Route path="/absenceEditEmp" element={<AbsenceEditEmp />} />
+          <Route path="/absenceManagePage" element={<AbsenceManagePage />} />
+          <Route path="/leaveFormMgPage" element={<LeaveFormMgPage />} />
           <Route path="/shiftManagementPage" element={<ShiftManagementPage />} />
           <Route path="/shiftManagementPage/addShiftPage" element={<AddShiftPage />} />
           <Route path="/shiftManagementPage/addShiftDetailPage" element={<AddShiftDetailPage />} />

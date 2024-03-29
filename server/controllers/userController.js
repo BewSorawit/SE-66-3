@@ -39,7 +39,28 @@ const createUser = async (req, res) => {
   }
 };
 
+const getUserByID = async (req, res) => {
+  try {
+    const { id } = req.params; // รับค่า ID ผู้ใช้จาก request params
+
+    // ค้นหาข้อมูลผู้ใช้โดยใช้ ID
+    const user = await User.findByPk(id);
+
+    // ตรวจสอบว่าพบผู้ใช้หรือไม่
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // ส่งข้อมูลผู้ใช้กลับไปยัง client
+    res.status(200).json(user);
+  } catch (error) {
+    console.error('Error getting user by ID:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getAllUsers,
-  createUser
+  createUser,
+  getUserByID
 };

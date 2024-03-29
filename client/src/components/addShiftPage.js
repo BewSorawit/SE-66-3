@@ -45,16 +45,16 @@ const AddShiftPage = () => {
       if (typetime) {
         const startMoment = moment(typetime.timeStart, 'HH:mm');
         let endMoment = moment(typetime.timeEnd, 'HH:mm');
-  
+
         if (endMoment.isBefore(startMoment)) {
           endMoment.add(1, 'day');
         }
-  
+
         if (startMoment.isValid() && endMoment.isValid()) {
           const duration = moment.duration(endMoment.diff(startMoment));
           const hours = duration.hours();
           const minutes = duration.minutes();
-  
+
           setHourDiff(`${hours} ชั่วโมง ${minutes < 10 ? '' : ''}${minutes} นาที`);
         }
       }
@@ -65,7 +65,7 @@ const AddShiftPage = () => {
 
   const addData = async () => {
     console.log(shiftID, selectedTypetime, user.branchID);
-    
+
     if (!shiftID || !selectedTypetime || !date) {
       window.alert('Please fill in all fields.');
       return;
@@ -82,7 +82,7 @@ const AddShiftPage = () => {
             branchID: user.branchID
           });
           window.alert('Data saved successfully.');
-          navigate('/shiftManagementPage'); 
+          navigate('/shiftManagementPage');
         } catch (error) {
           console.error('Error creating type time:', error);
           window.alert('Failed to save data.');
@@ -97,42 +97,42 @@ const AddShiftPage = () => {
   return (
     <div className='bg-success' style={{ minHeight: '100vh', padding: '50px' }}>
       <section className="rounded border mx-auto border-3 bg-white" style={{ width: '1300px', padding: '25px' }}>
-      <div>
-        <h5>Insert Shift</h5>
-        <div className="my-3" style={{ width: '400px' }}>
-          <label className="form-label">รหัสกะการทำงาน</label>
-          <input type="text" className="form-control border-2" id="shiftID" placeholder='Sxx (x = เลข)' value={shiftID} onChange={handleInputShiftIDChange} />
-        </div>
-
-        <div className="">
-          <div className="d-flex mt-3">
-            <div className="d-inline">
-              <p>เลือกวันของกะ</p>
-              <DatePicker className="rounded border border-2" selected={date} onChange={(date) => setDate(date)} showIcon isClearable />
-            </div>
-            <div className="d-inline mx-5">
-              <label className="form-label">เลือกช่วงเวลากะ</label>
-              <select className="form-select border-2  mt-2" value={selectedTypetime} onChange={(e) => setSelectedTypetime(e.target.value)}>
-                <option value="">---</option>
-                {typetimes.map(typetime => (
-                  <option key={typetime.timeID} value={typetime.timeID}>
-                    {moment(typetime.timeStart, 'HH:mm').format('HH:mm')} - {moment(typetime.timeEnd, 'HH:mm').format('HH:mm')}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="d-inline mx-5">
-              <label className="form-label">ชั่วโมงการทำงาน</label>
-              <input type="text" className="form-control border-2  mt-2" id="hourDiff" value={hourDiff} style={{ width: '300px' }} readOnly />
-            </div>
+        <div>
+          <h5>Insert Shift</h5>
+          <div className="my-3" style={{ width: '400px' }}>
+            <label className="form-label">รหัสกะการทำงาน</label>
+            <input type="text" className="form-control border-2" id="shiftID" placeholder='Sxx (x = เลข)' value={shiftID} onChange={handleInputShiftIDChange} />
           </div>
-          <div className="mt-3" style={{ paddingTop: '17px'}}>
+
+          <div className="">
+            <div className="d-flex mt-3">
+              <div className="d-inline">
+                <p>เลือกวันของกะ</p>
+                <DatePicker className="rounded border border-2" selected={date} onChange={(date) => setDate(date)} showIcon isClearable />
+              </div>
+              <div className="d-inline mx-5">
+                <label className="form-label">เลือกช่วงเวลากะ</label>
+                <select className="form-select border-2  mt-2" value={selectedTypetime} onChange={(e) => setSelectedTypetime(e.target.value)}>
+                  <option value="">---</option>
+                  {typetimes.map(typetime => (
+                    <option key={typetime.timeID} value={typetime.timeID}>
+                      {moment(typetime.timeStart, 'HH:mm').format('HH:mm')} - {moment(typetime.timeEnd, 'HH:mm').format('HH:mm')}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="d-inline mx-5">
+                <label className="form-label">ชั่วโมงการทำงาน</label>
+                <input type="text" className="form-control border-2  mt-2" id="hourDiff" value={hourDiff} style={{ width: '300px' }} readOnly />
+              </div>
+            </div>
+            <div className="mt-3" style={{ paddingTop: '17px' }}>
               <button className="btn btn-success" onClick={addData} style={{ width: '100px' }}>Save</button>
             </div>
+          </div>
+
         </div>
-        
-      </div>
-    </section>
+      </section>
     </div>
   )
 };

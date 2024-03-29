@@ -1,5 +1,5 @@
 // project/server/controllers/shiftDetailController.js
-const { ShiftDetail, User, TypeTime, Schedule, Shift } = require('../models');
+const { ShiftDetail, User, TypeTime, Schedule, Shift, Absence } = require('../models');
 
 
 // ดึงข้อมูล ShiftDetail ทั้งหมด
@@ -21,6 +21,10 @@ const getShowShiftDetail = async (req, res) => {
                 {
                     model: User,
                     attributes: ['firstName', 'surName', 'branchID'] // Include the firstName from the User table
+                },
+                {
+                    model: Absence,
+                    attributes: ['absenceType', 'status', 'userIDsend', 'userIDchange']
                 },
                 {
                     model: Shift,
@@ -108,19 +112,17 @@ const createShiftDetailWeb = async (req, res) => {
 };
 
 const deleteShiftDetailByID = async (req, res) => {
-    const { shiftDetailID } = req.params;
+    const { id } = req.params;
+
     try {
-        // ลบ ShiftDetail จาก shiftDetailID
-        const deletedShiftDetail = await ShiftDetail.destroy({ where: { shiftDetailID: shiftDetailID } });
-        
-        // ตรวจสอบว่าลบสำเร็จหรือไม่
-        if (deletedShiftDetail) {
-            res.status(204).end();
+        const deletedShift = await ShiftDetail.destroy({ where: { shiftDetailID: id } });
+        if (deletedShift) {
+            res.status(200).json({ message: 'Shift Detail deleted successfully.' });
         } else {
-            res.status(404).json({ error: 'ShiftDetail not found' });
+            res.status(404).json({ error: 'Shift Detail not found.' });
         }
     } catch (error) {
-        console.error('Error deleting shift detail:', error);
+        console.error('Error deleting shift:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };

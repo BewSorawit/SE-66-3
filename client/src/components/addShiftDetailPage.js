@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import axios from 'axios';
-import { Table, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { useUser } from './UserContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -75,10 +75,12 @@ function AddShiftDetailPage() {
 
     const clChecked = document.getElementById('cl').checked ? 'yes' : 'no';
     const otChecked = document.getElementById('ot').checked ? 'OT' : 'shift';
-    console.log({shiftID: shift.shiftID,
+    console.log({
+      shiftID: shift.shiftID,
       userID: selectedUser,
       status: otChecked,
-      statusCL: clChecked});
+      statusCL: clChecked
+    });
 
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/shiftdetails/createWeb`, {
@@ -88,26 +90,32 @@ function AddShiftDetailPage() {
         statusCL: clChecked
       });
       window.alert('Data saved successfully.');
-      window.location.reload();
-      // navigate('/shiftManagementPage');
+      //window.location.reload();
+      navigate('/shiftManagementPage');
     } catch (error) {
       console.error('Error creating ShiftDetail:', error);
       window.alert('Failed to save data.');
     }
   };
 
-  const handleDelete = async ( shiftDetailID ) => {
+  const handleDelete = async (shiftDetailID) => {
     try {
-      console.log(shiftDetailID);
+      console.log(shiftDetailID)
+      const confirmed = window.confirm('Are you sure you want to delete this shift?');
+      if (!confirmed) return; // ถ้าผู้ใช้ยกเลิกการลบ
+
+      // เรียก API ลบ Shift
       const response = await axios.delete(`${process.env.REACT_APP_API_URL}/shiftdetails/delete/${shiftDetailID}`);
       if (response.status === 200) {
         window.alert('Data deleted successfully.');
         const updatedShiftDetails = shiftDetails.filter((sd) => sd.shiftDetailID !== shiftDetailID);
         setShiftDetails(updatedShiftDetails);
       }
+
+      fetchUsers();
     } catch (error) {
-      console.error('Error deleting ShiftDetail:', error);
-      window.alert('Failed to delete data.');
+      console.error('Error deleting shift:', error);
+      // ดำเนินการเพิ่มโค้ดเพื่อแสดงข้อความผิดพลาดหรือดำเนินการอื่นๆ ตามที่ต้องการ
     }
   };
 
@@ -156,15 +164,21 @@ function AddShiftDetailPage() {
           </div>
         </div>
         <div className='d-inline' style={{ width: '650px' }}>
-          <h4>พนักงานในกะ {shift.shiftID}</h4>
+          <h4 >พนักงานในกะ {shift.shiftID}</h4>
           <div className="" style={{ width: '500px', maxHeight: '500px', overflowY: 'auto' }}>
             <Table striped bordered hover >
+              <thead>
+                <tr style={{textAlign:"center"}}>
+                  <th style={{ width: '70%' }}>ชื่อ - สกุล พนักงาน</th>
+                  <th style={{ width: '30%' }}>Action</th>
+                </tr>
+              </thead>
               <tbody>
                 {shiftDetails.map((shiftDetail) => (
                   <tr key={shiftDetail.shiftDetailID}>
                     <td>{shiftDetail.firstName} {shiftDetail.surName}</td>
-                    <td style={{ textAlign: 'center' }}>
-                      <Button variant="danger" size="sm" onClick={() => handleDelete(shiftDetail.shiftDetailID)}>Delete</Button>
+                    <td style={{marginLeft:"=20px"}}>
+                      <button className="btn btn-danger btn-sm mx-5" onClick={() => handleDelete(shiftDetail.shiftDetailID)}>Delete</button>
                     </td>
                   </tr>
                 ))}
