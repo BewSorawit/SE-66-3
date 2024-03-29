@@ -1,8 +1,12 @@
 import React from 'react'
 
-function HomeEmployee() {
+function HomeEmployee({ user }) {
+    console.log({user});
     return (
-        <div>Home Employee</div>
+        <div>
+            <div>Home Employee</div>
+        </div>
+
     )
 }
 

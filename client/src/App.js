@@ -25,7 +25,6 @@ import NavbarEmployee from './components/navbar/NavbarEmployee';
 import NavbarManager from './components/navbar/NavbarManager';
 import NavbarFc from './components/navbar/NavbarFc';
 import { Outlet } from 'react-router-dom';
-import Test from './components/Test';
 
 const AppLayoutAdmin = ({ handleLogout, children }) => (
   <>
@@ -129,27 +128,21 @@ const App = () => {
           <Route element={<AppLayoutManager handleLogout={handleLogout} />} >
             <Route path="/homeManager" element={<HomeManager user={user} />} />
             <Route path="/employeeShift" element={<Shift user={user} />} />
+            <Route path='/ManagerView' element={<ManagerView user={user} />}></Route>
+            <Route path='/ManagerView/sendFC/:absenceID' element={<InfoModal user={user} />}></Route>
           </Route>
         )}
 
         {user && user.roleID === "4" && (
           <Route element={<AppLayoutFc handleLogout={handleLogout} />} >
-            <Route path="/homeFc" element={<HomeFc />} />
+            <Route path="/homeFc" element={<HomeFc user={user} />} />
+            <Route path='/FcView' element={<FCviews user={user} />}></Route>
+            <Route path="/FcView/send/:absenceID" element={<SendToManager user={user} />}></Route>
+            <Route path='/FcCheck' element={<FcCheck user={user} />}></Route>
+            <Route path='/FcCheck/send/:absenceID' element={<FcCheckDetail user={user}/>}></Route>
+            <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC user={user} />}></Route>
           </Route>
         )}
-        {/* Name and fa */}
-        <Route>
-          <Route path='/FcView' element={<FCviews user={user} />}></Route>
-          <Route path="/FcView/send/:absenceID" element={<SendToManager user={user} />}></Route>
-          <Route path='/ManagerView' element={<ManagerView user={user} />}></Route>
-          <Route path='/ManagerView/sendFC/:absenceID' element={<InfoModal user={user} />}></Route>
-          <Route path='/FcCheck' element={<FcCheck />}></Route>
-          <Route path='/FcCheck/send/:absenceID' element={<FcCheckDetail />}></Route>
-          <Route path='/FcView/UpdateStatusFC/:absenceID' element={<UpdateStatusFC user={user} />}></Route>
-        </Route>
-
-
-        <Route path='/test' element={<Test user={user} />}></Route>
       </Routes>
     </Router>
   );

@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const { mysqlConnection } = require("../database/db");
+const { getAllFcDetail } = require('../controllers/fcDetailsController');
 
 const db = mysqlConnection;
 router.get("/FcView", (req, res) => {
@@ -247,4 +248,17 @@ router.delete("/delete/:absenceID", (req, res) => {
   });
 });
 
+router.get("/FcCheck/send/:absenceID", (req, res) => {
+  const absenceID = req.params.absenceID;
+  const sql = `S`;
+
+  db.query(sql, [absenceID], (err, data) => {
+    if (err)
+      return res.status(500).json({ error: "Error fetching branch details" });
+    return res.json(data);
+  });
+});
+
+
+router.get("/Fcdetails", getAllFcDetail);
 module.exports = router;
