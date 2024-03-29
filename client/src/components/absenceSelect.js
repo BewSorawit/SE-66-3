@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import axios from 'axios';
-import { Table } from 'react-bootstrap';
 import { useUser } from './UserContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -22,7 +21,7 @@ function AbsenceSelect() {
         try {
             console.log(shiftDetail.absenceID);
             const response = await axios.put(`${process.env.REACT_APP_API_URL}/absences/updateStatus/${shiftDetail.absenceID}`, { status: 'success' });
-            navigate('/absenceEditEmp', { state: { shiftDetail: shiftDetail } });
+            navigate('/absenceManagePage/absenceEditEmp', { state: { shiftDetail: shiftDetail } });
             console.log(response.data);
         } catch (error) {
             console.error('Error updating absence:', error);

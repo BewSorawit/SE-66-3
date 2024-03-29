@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import axios from 'axios';
-import { Table } from 'react-bootstrap';
 import { useUser } from './UserContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function AbsenceSum() {
     const { user } = useUser();
-    const [changeUser, setChangeUser] = useState(null); // เปลี่ยนเป็น null แทน ''
+    const [changeUser, setChangeUser] = useState(null); 
     const location = useLocation();
     const navigate = useNavigate();
     const shiftDetail = location.state.shiftDetail;
@@ -18,8 +17,8 @@ function AbsenceSum() {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/${newUserID}`);
             console.log("ลองดึง")
-            console.log(response.data) // เพื่อดูข้อมูลที่ได้จาก API
-            setChangeUser(response.data); // เก็บข้อมูลผู้ใช้ที่ได้จาก API ใน state
+            console.log(response.data) 
+            setChangeUser(response.data); 
         } catch (error) {
             console.error('Error fetching newUser:', error);
         }
@@ -27,7 +26,8 @@ function AbsenceSum() {
 
     useEffect(() => {
         fetchUser();
-    }, []); // เมื่อคอมโพเนนต์ถูกโหลดครั้งแรกเท่านั้น
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     const shiftRange = (start, end) => {
         const startDateTime = moment(start).format('DD/MM/YYYY, HH:mm');
@@ -78,7 +78,6 @@ function AbsenceSum() {
                                 <p>ชื่อ-สกุล คนที่มาแทน</p>
                             </div>
                             <div className='d-inline'>
-                                {/* เช็คว่ามีข้อมูล changeUser แล้วก่อนที่จะใช้ */}
                                 <input type="text" className="form-control border-2" value={changeUser ? changeUser.firstName + " " + changeUser.surName : ''} style={{ width: '300px' }} readOnly />
                             </div>
                         </div>

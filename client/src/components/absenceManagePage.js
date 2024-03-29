@@ -64,7 +64,12 @@ function AbsenceManagePage() {
     };
 
     const inform = (shiftDetail) => {
-        navigate('/absenceSelect', { state: { shiftDetail: shiftDetail } });
+        if(shiftDetail.status === "in branch"){
+            navigate('/absenceManagePage/absenceSelect', { state: { shiftDetail: shiftDetail} });
+        } else {
+            navigate('/absenceManagePage/absenceSum', { state: { shiftDetail: shiftDetail, newUserID: shiftDetail.newUserID } });
+        }
+        
     };
 
   return (

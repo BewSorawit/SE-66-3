@@ -41,11 +41,11 @@ const App = () => {
           {/* Bew and Focus */}
           <Route path="/shift" element={<Shift />} />
           <Route path="/timeManager" element={<TimeManager />} />
-          <Route path="/leaveFormEmPage" element={<LeaveFormEmPage />} />
-          <Route path="/absenceSum" element={<AbsenceSum />} />
-          <Route path="/absenceSelect" element={<AbsenceSelect />} />
-          <Route path="/absenceEditEmp" element={<AbsenceEditEmp />} />
+          <Route path="/absenceManagePage/absenceSum" element={<AbsenceSum />} />
+          <Route path="/absenceManagePage/absenceSelect" element={<AbsenceSelect />} />
+          <Route path="/absenceManagePage/absenceEditEmp" element={<AbsenceEditEmp />} />
           <Route path="/absenceManagePage" element={<AbsenceManagePage />} />
+          <Route path="/leaveFormEmPage" element={<LeaveFormEmPage />} />
           <Route path="/leaveFormMgPage" element={<LeaveFormMgPage />} />
           <Route path="/shiftManagementPage" element={<ShiftManagementPage />} />
           <Route path="/shiftManagementPage/addShiftPage" element={<AddShiftPage />} />

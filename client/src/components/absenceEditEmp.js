@@ -38,7 +38,7 @@ function AbsenceEditEmp() {
             const filteredData = response.data.filter(user => user.branchID === bID);
             setUsers(filteredData);
         } catch (error) {
-            console.error('Error fetching typetimes:', error);
+            console.error('Error fetching users:', error);
         }
     };
 
@@ -49,7 +49,7 @@ function AbsenceEditEmp() {
             
             console.log(response.data);
             window.alert('Data saved successfully.');
-            navigate('/absenceSum', { state: { shiftDetail: shiftDetail, newUserID: selectedUser} });
+            navigate('/absenceManagePage/absenceSum', { state: { shiftDetail: shiftDetail, newUserID: selectedUser} });
         } catch (error) {
             console.error('Error updating absence:', error);
         }
