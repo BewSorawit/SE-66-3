@@ -24,6 +24,7 @@ function AbsenceEditEmp({user}) {
       }, [shiftDetail]);
 
     useEffect(() => {
+        console.log(shiftDetail);
         fetchUsers();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
@@ -32,7 +33,7 @@ function AbsenceEditEmp({user}) {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/all`);
             const bID = user.branchID;
-            const filteredData = response.data.filter(user => user.branchID === bID);
+            const filteredData = response.data.filter(data => (data.branchID === bID) && (data.userID !== shiftDetail.leaveUserID) && (data.roleID ==="2" ||data.roleID ==="3"));
             setUsers(filteredData);
         } catch (error) {
             console.error('Error fetching users:', error);

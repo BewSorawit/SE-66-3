@@ -4,8 +4,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-
-
 const Shift = ({ user }) => {
     const [events, setEvents] = useState([]);
     useEffect(() => {
@@ -15,16 +13,16 @@ const Shift = ({ user }) => {
                 console.log(user);
                 // ดึงข้อมูลตารางเวลาเข้างานที่ต้องการแสดง
                 // const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShift`);
-        
+
                 const shiftDetailResponse = await axios.get(`${process.env.REACT_APP_API_URL}/shiftdetails/showShiftDetail`);
 
 
                 // Filter out the events where absenceId is null and branchID matches the user's branchID
                 const filteredData = shiftDetailResponse.data.filter(shiftDetail =>
-                    shiftDetail.shift.branchID === user.branchID  && (shiftDetail.absenceID === null || shiftDetail.absence.status === "success")
+                    shiftDetail.shift.branchID === user.branchID && (shiftDetail.absenceID === null || shiftDetail.absence.status === "success")
                 );
 
-                
+
 
                 const eventsData = filteredData.map((shiftDetail, index) => {
                     const startDateTime = new Date(`${shiftDetail.shift.schedule.date}T${shiftDetail.shift.typetime.timeStart}`);
