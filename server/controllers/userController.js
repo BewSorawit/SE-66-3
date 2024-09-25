@@ -1,6 +1,7 @@
 // project/server/controllers/userController.js
-const { where } = require('sequelize');
-const { User, Branch, TypeRole } = require('../models');
+const { caesarCipher } = require("../security/hashpassword");
+const { User, Branch, TypeRole } = require("../models");
+const bcrypt = require("bcrypt");
 
 // Controller สำหรับดึงข้อมูลผู้ใช้ทั้งหมด
 const getAllUsers = async (req, res) => {
@@ -10,8 +11,8 @@ const getAllUsers = async (req, res) => {
     // ส่งข้อมูลผู้ใช้กลับไปยัง client
     res.status(200).json(users);
   } catch (error) {
-    console.error('Error getting users:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error getting users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -22,22 +23,21 @@ const getAllUsersAndBranchAndRole = async (req, res) => {
       include: [
         {
           model: Branch,
-          attributes: ['branchID', 'branchName']
+          attributes: ["branchID", "branchName"],
         },
         {
           model: TypeRole,
-          attributes: ['roleID', 'roleName']
-        }
-      ]
+          attributes: ["roleID", "roleName"],
+        },
+      ],
     });
     // ส่งข้อมูลผู้ใช้กลับไปยัง client
     res.status(200).json(users);
   } catch (error) {
-    console.error('Error getting users:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error getting users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 // Controller สำหรับดึงข้อมูลผู้ใช้ ตามสาขาที่ตัวเองอยู่                  Cannot use    it error
 const getUserBranch = async (req, res) => {
@@ -47,8 +47,8 @@ const getUserBranch = async (req, res) => {
     // ดึงข้อมูลผู้ใช้ทั้งหมดจากฐานข้อมูล
     const users = await User.findAll({
       where: {
-        branchID: "\"" + branchID + "\""
-      }
+        branchID: '"' + branchID + '"',
+      },
     });
     if (users) {
       // console.log(req.body);
@@ -58,34 +58,48 @@ const getUserBranch = async (req, res) => {
       return res.json("Fail");
     }
   } catch (error) {
-    console.error('Error getting users:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error getting users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-
-// Controller สำหรับเพิ่มข้อมูลผู้ใช้ใหม่
 const createUser = async (req, res) => {
   try {
-    const { userID, firstName, surName, email, dateBirth, passwordUser, branchID, roleID } = req.body; // รับข้อมูลผู้ใช้จาก req.body
-
-    // สร้างผู้ใช้ใหม่ในฐานข้อมูล
+    let {
+      userID,
+      firstName,
+      surName,
+      email,
+      dateBirth,
+      passwordUser,
+      branchID,
+      roleID,
+    } = req.body;
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(passwordUser, saltRounds);
+    const Odd_shift = 23;
+    const Even_shift = 7;
+    const transformedPassword = caesarCipher(
+      hashedPassword,
+      Odd_shift,
+      Even_shift
+    );
+    // console.log(transformedPassword);
     const newUser = await User.create({
       userID: userID,
       firstName: firstName,
       surName: surName,
       email: email,
       dateBirth: dateBirth,
-      passwordUser: passwordUser,
+      passwordUser: transformedPassword,
       branchID: branchID,
-      roleID: roleID
+      roleID: roleID,
     });
-
     // ส่งคำตอบกลับไปยัง client
     res.status(201).json(newUser);
   } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error creating user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 const getUserByID = async (req, res) => {
@@ -97,38 +111,40 @@ const getUserByID = async (req, res) => {
 
     // ตรวจสอบว่าพบผู้ใช้หรือไม่
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     // ส่งข้อมูลผู้ใช้กลับไปยัง client
     res.status(200).json(user);
   } catch (error) {
-    console.error('Error getting user by ID:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error getting user by ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log('Updated user ID:', id);
+    console.log("Updated user ID:", id);
 
     const updatedUser = await User.update(req.body, {
       where: {
-        userID: id
-      }
+        userID: id,
+      },
     });
 
-    console.log('Update result:', updatedUser);
+    console.log("Update result:", updatedUser);
 
     if (updatedUser[0] !== 0) {
-      res.status(200).json({ message: 'User updated successfully' });
+      res.status(200).json({ message: "User updated successfully" });
     } else {
-      res.status(404).json({ message: 'User not found or no changes were made' });
+      res
+        .status(404)
+        .json({ message: "User not found or no changes were made" });
     }
   } catch (error) {
-    console.error('Error updating user:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 const deleteUser = async (req, res) => {
@@ -136,17 +152,17 @@ const deleteUser = async (req, res) => {
     const { id } = req.params;
     const deletedUser = await User.destroy({
       where: {
-        userID: id
-      }
+        userID: id,
+      },
     });
     if (deletedUser) {
-      res.status(200).json({ message: 'User deleted successfully' });
+      res.status(200).json({ message: "User deleted successfully" });
     } else {
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
-    console.error('Error deleting user:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -157,5 +173,5 @@ module.exports = {
   getAllUsersAndBranchAndRole,
   getUserByID,
   updateUser,
-  deleteUser
-}
+  deleteUser,
+};
