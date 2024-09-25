@@ -1,22 +1,39 @@
-// project/server/database/db.js
-const mysql = require('mysql');
-const { Sequelize } = require('sequelize');
+const mysql = require("mysql2");
+const { Sequelize } = require("sequelize");
 
-// การเชื่อมต่อ MySQL ด้วย mysql library
+// MySQL connection with mysql2 library
 const mysqlConnection = mysql.createConnection({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'se',
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "admin",
+  password: process.env.DB_PASSWORD || "admin123",
+  database: process.env.DB_NAME || "se",
 });
 
-// การเชื่อมต่อฐานข้อมูล Sequelize
-const sequelize = new Sequelize({
-  dialect: 'mysql',
-  host: process.env.DB_HOST || 'localhost',
-  username: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'se',
+mysqlConnection.connect((error) => {
+  if (error) {
+    console.error("MySQL connection error:", error);
+  } else {
+    console.log("Connected to MySQL database.");
+  }
 });
+
+// Sequelize connection
+const sequelize = new Sequelize({
+  dialect: "mysql",
+  host: process.env.DB_HOST || "localhost",
+  username: process.env.DB_USER || "admin",
+  password: process.env.DB_PASSWORD || "admin123",
+  database: process.env.DB_NAME || "se",
+  logging: false,
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Sequelize connected to MySQL database.");
+  })
+  .catch((error) => {
+    console.error("Sequelize connection error:", error);
+  });
 
 module.exports = { mysqlConnection, sequelize };
