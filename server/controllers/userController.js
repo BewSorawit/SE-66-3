@@ -24,7 +24,6 @@ const createUser = async (req, res) => {
 
     const oddShift = 23;
     const evenShift = 7;
-
     const transformedPassword = caesarCipher(passwordUser, oddShift, evenShift);
 
     pendingUsers[email] = {
@@ -39,34 +38,44 @@ const createUser = async (req, res) => {
     };
 
     await sendOTP(email);
-    res.status(200).json({
+    return res.status(200).json({
       message: "OTP sent to email. Please verify to complete registration.",
     });
   } catch (error) {
     console.error("Error during OTP sending:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 const confirmUserCreation = async (req, res) => {
-  const { email, inputOTP } = req.body;
+  const { otp, email } = req.query;
 
-  const pendingUser = pendingUsers[email];
-
-  if (!pendingUser) {
-    return res.status(400).json({ message: "No pending user found." });
+  if (!otp || !email) {
+    return res.status(400).json({ message: "OTP and email are required." });
   }
 
-  if (verifyOTP(inputOTP)) {
-    try {
-      await User.create(pendingUser);
-      delete pendingUsers[email];
-      return res.status(201).json({ message: "User created successfully." });
-    } catch (error) {
-      console.error("Error creating user:", error);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-  } else {
-    return res.status(400).json({ message: "Invalid OTP." });
+  const isVerified = verifyOTP(otp);
+  if (!isVerified) {
+    return res.status(400).json({ message: "Invalid or expired OTP." });
+  }
+
+  const userData = pendingUsers[email];
+  if (!userData) {
+    return res.status(400).json({ message: "No pending registration found." });
+  }
+
+  try {
+    const newUser = await User.create(userData);
+    delete pendingUsers[email];
+
+    return res.status(201).json({
+      message: "User created successfully!",
+
+      user: newUser,
+    });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
