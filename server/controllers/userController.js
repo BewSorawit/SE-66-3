@@ -1,7 +1,6 @@
 // project/server/controllers/userController.js
 const { caesarCipher } = require("../security/hashpassword");
 const { User, Branch, TypeRole } = require("../models");
-const bcrypt = require("bcrypt");
 
 // Controller สำหรับดึงข้อมูลผู้ใช้ทั้งหมด
 const getAllUsers = async (req, res) => {
@@ -65,7 +64,7 @@ const getUserBranch = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    let {
+    const {
       userID,
       firstName,
       surName,
@@ -75,27 +74,24 @@ const createUser = async (req, res) => {
       branchID,
       roleID,
     } = req.body;
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(passwordUser, saltRounds);
-    const Odd_shift = 23;
-    const Even_shift = 7;
-    const transformedPassword = caesarCipher(
-      hashedPassword,
-      Odd_shift,
-      Even_shift
-    );
-    // console.log(transformedPassword);
+
+    const oddShift = 23;
+    const evenShift = 7;
+
+    const transformedPassword = caesarCipher(passwordUser, oddShift, evenShift);
+    console.log("Transformed password before storing:", transformedPassword);
+
     const newUser = await User.create({
-      userID: userID,
-      firstName: firstName,
-      surName: surName,
-      email: email,
-      dateBirth: dateBirth,
+      userID,
+      firstName,
+      surName,
+      email,
+      dateBirth,
       passwordUser: transformedPassword,
-      branchID: branchID,
-      roleID: roleID,
+      branchID,
+      roleID,
     });
-    // ส่งคำตอบกลับไปยัง client
+
     res.status(201).json(newUser);
   } catch (error) {
     console.error("Error creating user:", error);
