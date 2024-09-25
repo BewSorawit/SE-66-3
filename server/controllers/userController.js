@@ -1,6 +1,74 @@
 // project/server/controllers/userController.js
 const { caesarCipher } = require("../security/hashpassword");
 const { User, Branch, TypeRole } = require("../models");
+const { sendOTP, verifyOTP } = require("../controllers/otpController");
+
+const pendingUsers = {};
+const createUser = async (req, res) => {
+  try {
+    const {
+      userID,
+      firstName,
+      surName,
+      email,
+      dateBirth,
+      passwordUser,
+      branchID,
+      roleID,
+    } = req.body;
+
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered." });
+    }
+
+    const oddShift = 23;
+    const evenShift = 7;
+
+    const transformedPassword = caesarCipher(passwordUser, oddShift, evenShift);
+
+    pendingUsers[email] = {
+      userID,
+      firstName,
+      surName,
+      email,
+      dateBirth,
+      passwordUser: transformedPassword,
+      branchID,
+      roleID,
+    };
+
+    await sendOTP(email);
+    res.status(200).json({
+      message: "OTP sent to email. Please verify to complete registration.",
+    });
+  } catch (error) {
+    console.error("Error during OTP sending:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+const confirmUserCreation = async (req, res) => {
+  const { email, inputOTP } = req.body;
+
+  const pendingUser = pendingUsers[email];
+
+  if (!pendingUser) {
+    return res.status(400).json({ message: "No pending user found." });
+  }
+
+  if (verifyOTP(inputOTP)) {
+    try {
+      await User.create(pendingUser);
+      delete pendingUsers[email];
+      return res.status(201).json({ message: "User created successfully." });
+    } catch (error) {
+      console.error("Error creating user:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  } else {
+    return res.status(400).json({ message: "Invalid OTP." });
+  }
+};
 
 // Controller สำหรับดึงข้อมูลผู้ใช้ทั้งหมด
 const getAllUsers = async (req, res) => {
@@ -30,7 +98,7 @@ const getAllUsersAndBranchAndRole = async (req, res) => {
         },
       ],
     });
-    // ส่งข้อมูลผู้ใช้กลับไปยัง client
+
     res.status(200).json(users);
   } catch (error) {
     console.error("Error getting users:", error);
@@ -62,42 +130,6 @@ const getUserBranch = async (req, res) => {
   }
 };
 
-const createUser = async (req, res) => {
-  try {
-    const {
-      userID,
-      firstName,
-      surName,
-      email,
-      dateBirth,
-      passwordUser,
-      branchID,
-      roleID,
-    } = req.body;
-
-    const oddShift = 23;
-    const evenShift = 7;
-
-    const transformedPassword = caesarCipher(passwordUser, oddShift, evenShift);
-    console.log("Transformed password before storing:", transformedPassword);
-
-    const newUser = await User.create({
-      userID,
-      firstName,
-      surName,
-      email,
-      dateBirth,
-      passwordUser: transformedPassword,
-      branchID,
-      roleID,
-    });
-
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 const getUserByID = async (req, res) => {
   try {
     const { id } = req.params; // รับค่า ID ผู้ใช้จาก request params
@@ -170,4 +202,5 @@ module.exports = {
   getUserByID,
   updateUser,
   deleteUser,
+  confirmUserCreation,
 };
