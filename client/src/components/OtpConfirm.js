@@ -13,22 +13,31 @@ export default function OtpConfirm() {
     e.preventDefault();
     setLoading(true);
 
+    const accessToken = localStorage.getItem("accessToken");
+
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/otp/confirm?otp=${otp}&email=${email}`
+        `${process.env.REACT_APP_API_URL}/otp/confirm?otp=${otp}&email=${email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
 
       if (response.data.message === "User created successfully!") {
         setMessage("OTP verified successfully! Redirecting...");
-        setTimeout(() => navigate("/homeAdmin"), 2000);
+
+        setTimeout(() => navigate("/homeAdmin"), 500);
       } else {
         setMessage("Invalid OTP or email.");
       }
     } catch (error) {
       setMessage("Error confirming OTP. Please try again.");
+      console.error("Error confirming OTP:", error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (

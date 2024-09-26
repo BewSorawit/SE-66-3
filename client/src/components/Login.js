@@ -60,9 +60,15 @@ function Login({ setUser }) {
         .post(`${process.env.REACT_APP_API_URL}/login`, values)
         .then((res) => {
           const userData = res.data.user;
-          setUser(userData);
-          localStorage.setItem("user", JSON.stringify(userData));
-          navigateToCorrectPage(userData);
+          const accessToken = res.data.accessToken; // Extract access token
+          const refreshToken = res.data.refreshToken; // Extract refresh token
+
+          setUser(userData); // Set user state
+          localStorage.setItem("user", JSON.stringify(userData)); // Store user data
+          localStorage.setItem("accessToken", accessToken); // Store access token
+          localStorage.setItem("refreshToken", refreshToken); // Store refresh token
+
+          navigateToCorrectPage(userData); // Navigate based on user role
         })
         .catch((err) => {
           alert(err.response?.data?.message || "Login failed.");
