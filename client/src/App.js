@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import axios from "axios";
 import {
   BrowserRouter as Router,
   Routes,
@@ -75,26 +74,15 @@ const AppLayoutFc = ({ handleLogout, children }) => (
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [navigate, setNavigate] = useState(false);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser) {
       setUser(JSON.parse(loggedInUser));
+      setNavigate(true);
     }
   }, []);
-
-  const handleLogin = async (values) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/login`,
-        values
-      );
-      setUser(response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
-    } catch (error) {
-      console.error("Error logging in:", error);
-    }
-  };
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to log out?")) {
@@ -105,25 +93,31 @@ const App = () => {
       return null;
     }
   };
-
+  const getRedirectPath = (user) => {
+    switch (user.roleID) {
+      case "1":
+        return "/homeAdmin";
+      case "2":
+        return "/homeManager";
+      case "3":
+        return "/homeEmployee";
+      case "4":
+        return "/homeFc";
+      default:
+        return "/";
+    }
+  };
   return (
     <Router>
+      {navigate && <Navigate to={getRedirectPath(user)} />}
       <Routes>
         <Route
           path="/"
           element={
-            user ? (
-              user.roleID === "1" ? (
-                <Navigate to="/homeAdmin" />
-              ) : user.roleID === "2" ? (
-                <Navigate to="/homeManager" />
-              ) : user.roleID === "3" ? (
-                <Navigate to="/homeEmployee" />
-              ) : user.roleID === "4" ? (
-                <Navigate to="/homeFc" />
-              ) : null
+            !user ? (
+              <Login setUser={setUser} />
             ) : (
-              <Login setUser={handleLogin} />
+              <Navigate to={getRedirectPath(user)} />
             )
           }
         />

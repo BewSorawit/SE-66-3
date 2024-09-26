@@ -10,66 +10,85 @@ function Login({ setUser }) {
   });
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigateToCorrectPage = useCallback(
     (userData) => {
-      if (userData.roleID === "1") {
-        navigate("/homeAdmin");
-      } else if (userData.roleID === "3") {
-        navigate("/homeEmployee");
-      } else if (userData.roleID === "2") {
-        navigate("/homeManager");
-      } else if (userData.roleID === "4") {
-        navigate("/homeFc");
-      } else if (userData.roleID === "5") {
-        navigate("");
-      } else {
-        alert("No record existed");
+      const roleID = userData.roleID;
+      switch (roleID) {
+        case "1":
+          navigate("/homeAdmin");
+          break;
+        case "2":
+          navigate("/homeManager");
+          break;
+        case "3":
+          navigate("/homeEmployee");
+          break;
+        case "4":
+          navigate("/homeFc");
+          break;
+        default:
+          alert("No record existed");
       }
     },
     [navigate]
   );
 
   useEffect(() => {
-    // Check if user is already logged in from localStorage
     const loggedInUser = localStorage.getItem("user");
     if (loggedInUser) {
       navigateToCorrectPage(JSON.parse(loggedInUser));
     }
   }, [navigateToCorrectPage]);
 
-  const handleInput = (event) =>
-    setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  const handleInput = (event) => {
+    const { name, value } = event.target;
+    setValues((prev) => ({ ...prev, [name]: value }));
+    console.log("Current Input Values:", { ...values, [name]: value }); // Log current state
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setErrors(Validation(values));
-    if (Object.keys(errors).length === 0) {
+    setIsLoading(true);
+
+    const validationErrors = Validation(values);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
       axios
         .post(`${process.env.REACT_APP_API_URL}/login`, values)
         .then((res) => {
-          setUser(res.data);
-          localStorage.setItem("user", JSON.stringify(res.data)); // Save user data in localStorage
-          navigateToCorrectPage(res.data);
+          const userData = res.data.user;
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(userData));
+          navigateToCorrectPage(userData);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          alert(err.response?.data?.message || "Login failed.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center bg-success vh-100">
       <div className="bg-white p-3 rounded w-25">
-        <div className=" justify-content-md-between d-flex">
+        <div className="justify-content-md-between d-flex">
           <h3 className="align-items-center d-flex">Sign in</h3>
           <img
-            className="d-flex rounded "
+            className="d-flex rounded"
             src={logo}
             alt="Logo"
             width={75}
             height={75}
           />
         </div>
-        <form action="" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="inputEmail">
               <strong>Email</strong>
@@ -103,8 +122,12 @@ function Login({ setUser }) {
               <span className="text-danger">{errors.passwordUser}</span>
             )}
           </div>
-          <button type="submit" className="btn btn-warning w-100 rounded">
-            Log in
+          <button
+            type="submit"
+            className="btn btn-warning w-100 rounded"
+            disabled={isLoading}
+          >
+            {isLoading ? "Logging in..." : "Log in"}
           </button>
         </form>
       </div>
@@ -126,7 +149,8 @@ function Validation(values) {
   if (!values.passwordUser.trim()) {
     error.passwordUser = "Password should not be empty";
   } else if (!password_pattern.test(values.passwordUser)) {
-    error.passwordUser = "Password format is incorrect";
+    error.passwordUser =
+      "Password must be at least 8 characters long and contain at least one number, one uppercase letter, and one lowercase letter.";
   }
 
   return error;

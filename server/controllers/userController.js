@@ -2,6 +2,10 @@
 const { caesarCipher } = require("../security/hashpassword");
 const { User, Branch, TypeRole } = require("../models");
 const { sendOTP, verifyOTP } = require("../controllers/otpController");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../utils/tokenUtils");
 
 const pendingUsers = {};
 const createUser = async (req, res) => {
@@ -68,10 +72,14 @@ const confirmUserCreation = async (req, res) => {
     const newUser = await User.create(userData);
     delete pendingUsers[email];
 
+    const accessToken = generateAccessToken({ userId: newUser.userID });
+    const refreshToken = generateRefreshToken({ userId: newUser.userID });
+
     return res.status(201).json({
       message: "User created successfully!",
-
       user: newUser,
+      accessToken,
+      refreshToken,
     });
   } catch (error) {
     console.error("Error creating user:", error);
