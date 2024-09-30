@@ -1,24 +1,31 @@
 // project/server/routes/userRoutes.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { getAllUsers, getUserByID, getUserBranch, getAllUsersAndBranchAndRole,createUser,deleteUser ,updateUser} = require('../controllers/userController');
+const {
+  getAllUsers,
+  getUserByID,
+  getUserBranch,
+  getAllUsersAndBranchAndRole,
+  createUser,
+  deleteUser,
+  updateUser,
+} = require("../controllers/userController");
 
 // GET all users
-router.get('/users/all', getAllUsers);
+router.get("/users/all", getAllUsers);
 
 // GET users branch
-router.get('/users/getuserbranch', getUserBranch);
+router.get("/users/getuserbranch", getUserBranch);
 
 // POST a new user
-router.post('/users/create', createUser);
+router.post("/users/create", createUser);
 
-router.get('/users/getAllUsersAndBranchAndRole', getAllUsersAndBranchAndRole);
+router.get("/users/getAllUsersAndBranchAndRole", getAllUsersAndBranchAndRole);
 
-router.get('/users/:id', getUserByID);
+router.get("/users/:id", getUserByID);
 
+router.put("/users/:id", updateUser);
 
-router.put('/users/:id', updateUser);
-
-router.delete('/users/delete/:id', deleteUser);
+router.delete("/users/delete/:id", deleteUser);
 
 module.exports = router;
