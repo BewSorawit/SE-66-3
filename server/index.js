@@ -1,18 +1,23 @@
 // project/server/index.js
+const https = require("https");
+const fs = require("fs");
 const app = require("./config/express");
 const { mysqlConnection, sequelize } = require("./database/db");
 const { readdirSync } = require("fs");
 
 const port = process.env.PORT || 3001;
 
+const sslOptions = {
+  key: fs.readFileSync("./ssl/private.key"),
+  cert: fs.readFileSync("./ssl/certificate.crt"),
+};
+
 // สร้างฟังก์ชันสำหรับเริ่มต้นเซิร์ฟเวอร์
 const startServer = async () => {
   try {
-    // รอให้ฐานข้อมูล Sequelize สร้างตารางและเชื่อมต่อ
     await sequelize.sync();
     console.log("Sequelize database synchronized.");
 
-    // เชื่อมต่อกับ MySQL
     await new Promise((resolve, reject) => {
       mysqlConnection.connect((err) => {
         if (err) {
@@ -24,9 +29,7 @@ const startServer = async () => {
         }
       });
     });
-
-    // เริ่มต้นเซิร์ฟเวอร์เมื่อทุกอย่างพร้อม
-    app.listen(port, () => {
+    https.createServer(sslOptions, app).listen(port, () => {
       console.log(`Server listening on port ${port}`);
     });
   } catch (error) {
