@@ -6,6 +6,12 @@ const {
   generateRefreshToken,
 } = require("../utils/tokenUtils");
 
+const Redis = require("ioredis");
+const redis = new Redis();
+
+const MAX_FAILED_ATTEMPTS = 5;
+const LOCK_TIME = 30 * 60;
+
 const login = async (req, res) => {
   try {
     let { email, passwordUser } = req.body;
@@ -14,6 +20,16 @@ const login = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Both email and password are required." });
+    }
+
+    const attemptsKey = `loginAttempts:${email}`;
+    const lockoutKey = `lockout:${email}`;
+
+    const isLocked = await redis.get(lockoutKey);
+    if (isLocked) {
+      return res.status(429).json({
+        message: "Too many failed login attempts. Please try again later.",
+      });
     }
 
     const Odd_shift = 23;
@@ -33,6 +49,9 @@ const login = async (req, res) => {
     });
 
     if (user) {
+      await redis.del(attemptsKey);
+      await redis.del(lockoutKey);
+
       const accessToken = generateAccessToken({ userId: user.userID });
       const refreshToken = generateRefreshToken({ userId: user.userID });
 
@@ -60,6 +79,18 @@ const login = async (req, res) => {
         refreshToken,
       });
     } else {
+      const attempts = await redis.incr(attemptsKey);
+      if (attempts === 1) {
+        await redis.expire(attemptsKey, LOCK_TIME);
+      }
+
+      if (attempts >= MAX_FAILED_ATTEMPTS) {
+        await redis.set(lockoutKey, "locked", "EX", LOCK_TIME);
+        return res.status(429).json({
+          message: "Too many failed login attempts. Please try again later.",
+        });
+      }
+
       return res
         .status(401)
         .json({ message: "Login failed. Invalid email or password." });
