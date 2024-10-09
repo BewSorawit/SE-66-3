@@ -1,30 +1,79 @@
-const caesarCipher = (str, odd_shift, even_shift) => {
+const reverseAlphabetMap = {
+  a: "h",
+  b: "g",
+  c: "f",
+  d: "e",
+  e: "d",
+  f: "c",
+  g: "b",
+  h: "a",
+  i: "r",
+  j: "p",
+  k: "q",
+  l: "n",
+  m: "o",
+  n: "l",
+  o: "m",
+  p: "j",
+  q: "k",
+  r: "i",
+  s: "z",
+  t: "y",
+  u: "x",
+  v: "w",
+  w: "v",
+  x: "u",
+  y: "t",
+  z: "s",
+};
+
+const reverseNumberMap = {
+  0: "7",
+  1: "6",
+  2: "4",
+  3: "0",
+  4: "2",
+  5: "8",
+  6: "5",
+  7: "6",
+  8: "9",
+  9: "1",
+};
+
+const mapChar = (char, count) => {
+  if (char.match(/[a-z]/)) {
+    const newChar = reverseAlphabetMap[char.toLowerCase()];
+    return String.fromCharCode(newChar.charCodeAt(0) + count);
+  } else if (char.match(/[0-9]/)) {
+    return reverseNumberMap[char];
+  } else {
+    return char;
+  }
+};
+
+const caesarCipher = (str) => {
   let transformedStr = "";
+
+  let group1 = "",
+    group2 = "",
+    group3 = "";
+
+  let count = 0;
 
   for (let i = 0; i < str.length; i++) {
     let char = str[i];
-    let shift = i % 2 === 0 ? even_shift : odd_shift;
+    count++;
 
-    if (char.match(/[a-z]/i)) {
-      let code = char.charCodeAt(0);
-      if (code >= 65 && code <= 90) {
-        transformedStr += String.fromCharCode(
-          ((code - 65 + shift + 26) % 26) + 65
-        );
-      } else if (code >= 97 && code <= 122) {
-        transformedStr += String.fromCharCode(
-          ((code - 97 + shift + 26) % 26) + 97
-        );
-      }
-    } else if (char.match(/[0-9]/)) {
-      let code = char.charCodeAt(0);
-      transformedStr += String.fromCharCode(
-        ((code - 48 + shift + 10) % 10) + 48
-      );
+    if (i % 3 === 0) {
+      group1 += mapChar(char, count);
+    } else if (i % 3 === 1) {
+      group2 += mapChar(char, count);
     } else {
-      transformedStr += char;
+      group3 += mapChar(char, count);
     }
   }
+
+  transformedStr = group1 + group2 + group3;
 
   return transformedStr;
 };
