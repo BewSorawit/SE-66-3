@@ -10,8 +10,9 @@ const {
   deleteUser,
   updateUser,
 } = require("../controllers/userController");
+const authMiddleware = require("../Middlewares/authMiddleware");
 
-// GET all users
+// GET all users,
 router.get("/users/all", getAllUsers);
 
 // GET users branch

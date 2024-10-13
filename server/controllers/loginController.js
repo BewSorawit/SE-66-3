@@ -1,6 +1,6 @@
 // project/server/controllers/loginController.js
 const { User, TypeRole } = require("../models");
-const { caesarCipher } = require("../security/hashpassword");
+const { passwordHashing } = require("../security/hashpassword");
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -32,10 +32,7 @@ const login = async (req, res) => {
       });
     }
 
-    const Odd_shift = 23;
-    const Even_shift = 7;
-
-    passwordUser = caesarCipher(passwordUser, Odd_shift, Even_shift);
+    passwordUser = passwordHashing(passwordUser);
 
     const user = await User.findOne({
       where: {

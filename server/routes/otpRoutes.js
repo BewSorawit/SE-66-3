@@ -5,6 +5,6 @@ const authMiddleware = require("../Middlewares/authMiddleware");
 
 const router = express.Router();
 router.post("/otp/send", sendOTP);
-router.get("/otp/confirm", authMiddleware, confirmUserCreation);
+router.get("/otp/confirm", confirmUserCreation);
 
 module.exports = router;

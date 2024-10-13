@@ -1,5 +1,5 @@
 // project/server/controllers/userController.js
-const { caesarCipher } = require("../security/hashpassword");
+const { passwordHashing } = require("../security/hashpassword");
 const { User, Branch, TypeRole } = require("../models");
 const { sendOTP, verifyOTP } = require("../controllers/otpController");
 const {
@@ -26,9 +26,7 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: "Email already registered." });
     }
 
-    const oddShift = 23;
-    const evenShift = 7;
-    const transformedPassword = caesarCipher(passwordUser, oddShift, evenShift);
+    const transformedPassword = passwordHashing(passwordUser);
 
     pendingUsers[email] = {
       userID,

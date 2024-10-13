@@ -40,42 +40,57 @@ const reverseNumberMap = {
   9: "1",
 };
 
-const mapChar = (char, count) => {
-  if (char.match(/[a-z]/)) {
-    const newChar = reverseAlphabetMap[char.toLowerCase()];
-    return String.fromCharCode(newChar.charCodeAt(0) + count);
-  } else if (char.match(/[0-9]/)) {
-    return reverseNumberMap[char];
+const SECRET_KEY = "?w[q/;h.<pHC0ZC.:mR$Y9/'7Hh)$5";
+
+const mapChar = (char, index) => {
+  const keyChar = SECRET_KEY[index % SECRET_KEY.length];
+  // console.log(keyChar);
+
+  let shiftValue = 0;
+  if (/[a-z]/i.test(keyChar)) {
+    // console.log(keyChar.toLowerCase().charCodeAt(0));
+    shiftValue = keyChar.toLowerCase().charCodeAt(0) - 97; // a=0
+    // console.log(shiftValue);
+  } else if (/[0-9]/.test(keyChar)) {
+    shiftValue = parseInt(keyChar, 10);
+  }
+  // console.log(shiftValue);
+
+  if (/[a-z]/i.test(char)) {
+    const mappedChar =
+      reverseAlphabetMap[char.toLowerCase()] || char.toLowerCase();
+    // console.log(mappedChar);
+
+    let shiftedCharCode =
+      ((mappedChar.charCodeAt(0) - 97 + shiftValue) % 26) + 97; // a-z
+    let shiftedChar = String.fromCharCode(shiftedCharCode);
+    // console.log(shiftedChar);
+
+    return shiftedChar;
+  } else if (/[0-9]/.test(char)) {
+    let mappedDigit = reverseNumberMap[char] || char;
+    let numericValue = parseInt(mappedDigit, 10);
+    numericValue = (numericValue + shiftValue) % 9;
+    numericValue = numericValue === 0 ? 9 : numericValue;
+
+    return numericValue.toString();
   } else {
-    return char;
+    return "";
   }
 };
 
-const caesarCipher = (str) => {
-  let transformedStr = "";
+const passwordHashing = (password) => {
+  let hash = "";
 
-  let group1 = "",
-    group2 = "",
-    group3 = "";
-
-  let count = 0;
-
-  for (let i = 0; i < str.length; i++) {
-    let char = str[i];
-    count++;
-
-    if (i % 3 === 0) {
-      group1 += mapChar(char, count);
-    } else if (i % 3 === 1) {
-      group2 += mapChar(char, count);
-    } else {
-      group3 += mapChar(char, count);
-    }
+  for (let i = 0; i < password.length; i++) {
+    const char = password[i];
+    const hashedChar = mapChar(char, i);
+    // console.log(hashedChar);
+    hash += hashedChar;
   }
 
-  transformedStr = group1 + group2 + group3;
+  hash = hash.split("").reverse().join("") + "x";
 
-  return transformedStr;
+  return hash;
 };
-
-module.exports = { caesarCipher };
+module.exports = { passwordHashing };
